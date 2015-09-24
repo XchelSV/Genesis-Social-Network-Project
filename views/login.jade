@@ -1,0 +1,37 @@
+html
+	head
+		meta(charset='utf-8') 
+		meta(http-equiv='X-UA-Compatible', content='IE=edge')
+		meta(name='viewport', content='width=device-width, initial-scale=1')
+		script(type='text/javascript', src='js/angular.min.js')
+	
+		title Genesis Mesoamérica
+	
+		script(type='text/javascript', src='js/jquery-1.11.1.min.js')
+		link(rel='stylesheet', type='text/css', href='css/bootstrap.min.css')
+		//script(type='text/javascript', src="js/angularmodule.js")
+		script(type='text/javascript', src='js/bootstrap.min.js')
+		link(rel='stylesheet', type='text/css', href='css/style.css')
+	
+		//script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular-route.js')
+		//script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular-cookies.js')
+	body
+		.container
+			.row
+				.col-md-6
+					img(src='img/logo.png' , class="img-responsive", alt="Responsive image", width='85%')
+				.col-md-6
+					.login(style='margin-top:25%')
+						.heading
+							h2(align='center' style='color : #E6E6E6') ¡Bienvenidos Misioneros!
+							form(action='#')
+								.form-group.input-group.input-group-lg
+									span.input-group-addon
+										i.fa.fa-user
+									input.form-control(type='text', placeholder='Nombre de Usuario')
+								.form-group.input-group.input-group-lg
+									span.input-group-addon
+										i.fa.fa-lock
+									input.form-control(type='password', placeholder='Contraseña')
+								button.btn.btn-lg.btn-primary.btn-block(type='submit') Aceptar
+				
