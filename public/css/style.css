@@ -29,8 +29,10 @@ body {
 }
 
 body, input, button {
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: 'Baumans', cursive,'Source Sans Pro', sans-serif;
 }
+
+
 
 @mixin normalize-input {
   display: block;
@@ -199,3 +201,6 @@ body, input, button {
     min-height: 0;
   }
 }
+
+
+

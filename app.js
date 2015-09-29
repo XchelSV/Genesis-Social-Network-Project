@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var app = express();
 
 var http = require('http').Server(app);
+var io = require('socket.io')(http);
 var MongoClient = require('mongodb').MongoClient;
 
 // view engine setup
@@ -29,6 +30,7 @@ if (err) throw err;
 
   require('./routes/routes_www')(app,GenesisDB);
   require('./routes/routes_API')(app,GenesisDB);
+  require('./routes/routes_SocketIO')(io);
 });
 
 http.listen(1234,function () {

@@ -8,4 +8,12 @@ module.exports = (function (app,GenesisDB){
 
 		})
 
+	app.route('/start')
+
+		.get(function (request,response){
+
+			response.render('index')
+
+		})
+
 });
