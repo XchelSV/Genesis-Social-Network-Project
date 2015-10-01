@@ -3,7 +3,23 @@
   background: #347FA2;
   width: auto;
 }
-#cssmenu ul {
+
+ #messages { list-style-type: none; margin: 0; padding: 0; }
+ #messages li { padding: 5px 10px; }
+
+ .footer
+{
+    
+    width:80%;
+    height:100px;
+    position:fixed;
+    bottom:10px;
+    left:0;
+}
+
+
+
+ #cssmenu ul {
   list-style: none;
   margin: 0;
   padding: 0;
