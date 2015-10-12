@@ -1,4 +1,4 @@
-jQuery(document).ready(function($){
+$(document).ready(function(){
 	//open the lateral panel
 	$('.cd-btn').on('click', function(event){
 		event.preventDefault();

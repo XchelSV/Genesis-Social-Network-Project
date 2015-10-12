@@ -12,7 +12,9 @@ html.no-js(lang='en')
     link(rel='stylesheet', type='text/css',href='css/style2.css')
     link(rel='stylesheet', type='text/css',href='css/styles.css') 
 
-
+    script(type='text/javascript', src = 'js/jquery-1.11.1.min.js')
+    script(type='text/javascript', src = 'js/socketModule.js')
+      
     // Resource style
     script(src='js/modernizr.js')
     // Modernizr
@@ -59,10 +61,10 @@ html.no-js(lang='en')
               
             
             .footer.col-md-10.col-md-offset-1
-              form
+              
                 .form-group
-                  textarea.form-control(type = 'text' , placeholder = '¡Mensajea con los demás Misioneros!')
-                  button(type='submit').btn.btn-info.btn-lg.btn-block   Enviar
+                  textarea.form-control#chatText(type = 'text' , placeholder = '¡Mensajea con los demás Misioneros!')
+                  button#inboxForm.btn.btn-info.btn-lg.btn-block   Enviar
             
           // cd-panel-content
         // cd-panel-container
@@ -71,7 +73,4 @@ html.no-js(lang='en')
   script(src='js/main.js')
 
   script(src='/socket.io/socket.io.js')
-  script.
-      var socket = io();
-
-      
+  
