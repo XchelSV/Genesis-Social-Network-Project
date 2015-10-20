@@ -21,11 +21,7 @@ body {
 }
 
 body { 
-  background: url(https://dl.dropboxusercontent.com/u/159328383/background.jpg) no-repeat center center fixed; 
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
+ background: #1C1C1C;
 }
 
 a {
