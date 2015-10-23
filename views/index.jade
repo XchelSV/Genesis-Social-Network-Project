@@ -1,25 +1,33 @@
 doctype html
-html.no-js(lang='en')
+html(lang='en',ng-app='Genesis')
   head
-    meta(charset='UTF-8')
+    meta(http-equiv="Content-type" content="text/html;charset=UTF-8")
     meta(http-equiv='X-UA-Compatible', content='IE=edge')
     meta(name='viewport', content='width=device-width, initial-scale=1')
 
     link(href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700|Droid+Serif', rel='stylesheet', type='text/css')
-    link(rel='stylesheet', type='text/css', href='css/bootstrap.min.css')
+    link(rel='stylesheet', type='text/css', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css')
     link(rel='stylesheet',type='text/css', href='css/reset.css')
+    link(rel='stylesheet', type='text/css',href='css/animate.css')
     // CSS reset
     link(rel='stylesheet', type='text/css',href='css/style2.css')
     link(rel='stylesheet', type='text/css',href='css/styles.css') 
 
-    script(type='text/javascript', src = 'js/jquery-1.11.1.min.js')
+    script(type='text/javascript', src = 'js/jquery-2.1.1.js')
+    script(type='text/javascript', src = 'js/angular.min.js')
+    script(type='text/javascript', src = 'js/angularModule.js')
     script(type='text/javascript', src = 'js/socketModule.js')
+    script(type='text/javascript', src = 'js/main.js')
       
     // Resource style
     script(src='js/modernizr.js')
     // Modernizr
+
+    script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular-route.js')
+    script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular-cookies.js')
+
     title Genesis Mesoamerica
-  body
+  body(ng-controller='indexController')
 
     header
       #cssmenu
@@ -29,21 +37,21 @@ html.no-js(lang='en')
               span Inicio
           li
             a(href='#')
-              span Publicar Devocionales
+              span Devocionales
           li
             a(href='#')
-              span Historial
+              span Misioneros
           li.last
             a.cd-btn(href='#')
-              span Inbox Génesis
+              span Perfil
 
     .container-fluid
       
       main.cd-main-content
         .jumbotron(style = 'margin-top : 1%')
           h1 Hello, world!
-          p ...
-          p
+          p ... 
+          p 
             a.btn.btn-primary.btn-lg(href='#', role='button') Learn more
 
 
@@ -51,28 +59,75 @@ html.no-js(lang='en')
         //panel for real time chat
       .cd-panel.from-right
         header.cd-panel-header
-          h1 Inbox Génesis
+          h1(align='center') Perfil del Misionero
           a.cd-panel-close(href='#0') Close
         .cd-panel-container
           .cd-panel-content
 
-            ul.list-group#messages
-              li.list-group-item AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-              li.list-group-item AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-              li.list-group-item AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+            .row
+              .col-md-4.col-md-offset-1
+                a.thumbnail(href='#')
+                  img.img-responsive.img-rounded(src='img/426761_2771498492001_549053074_n.jpg', alt='img-responsive')
+
+              .col-md-7
+                .well.well-lg
+                  h3
+                    .row
+                      .col-md-3
+                        span.glyphicon.glyphicon-user(aria-hidden="true")
+                      .col-md-offset-1
+                        | {{name}}
+
+                    .row.margin-top
+                      .col-md-3
+                         span.glyphicon.glyphicon-gift(aria-hidden="true")
+                      .col-md-offset-1
+                        | Cumpleaños: {{day}}/{{month}}
+
+                     .row.margin-top
+                      .col-md-3
+                        span.glyphicon.glyphicon-pushpin(aria-hidden="true")
+                      .col-md-offset-1
+                        | Lugar de Servicio: {{servicePlace}}
+
+
+                     .row.margin-top
+                      .col-md-3
+                        span.glyphicon.glyphicon-tag(aria-hidden="true")
+                      .col-md-offset-1
+                        | Biografía:
+
+                     .row.margin-top
+                      .col-md-10.col-md-offset-1(align='justify')
+                        {{biography}}
+                        
+                     .row.margin-top
+                        .col-md-10.col-md-offset-1
+                          a(href='#')
+                            | Editar Información
+
+
+            .row
+              .col-md-offset-1.col-md-11
+                   .list-group
+                      a.list-group-item.active(href='#',align='center')
+                        | Publicaciones Recientes 
+                      a.list-group-item(href='#') Dapibus ac facilisis in
+                      a.list-group-item(href='#') Morbi leo risus
+                      a.list-group-item(href='#') Porta ac consectetur ac
+                      a.list-group-item(href='#') Vestibulum at eros
+                              
+                  
+
               
             
             .footer.col-md-10.col-md-offset-1
               
-                .form-group
-                  textarea.form-control#chatText(type = 'text' , placeholder = '¡Mensajea con los demás Misioneros!')
-                  button#inboxForm.btn.btn-info.btn-lg.btn-block   Enviar
+                
             
           // cd-panel-content
         // cd-panel-container
       // cd-panel
-  script(src='js/jquery-2.1.1.js')
-  script(src='js/main.js')
 
   script(src='/socket.io/socket.io.js')
   

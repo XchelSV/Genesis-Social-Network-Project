@@ -10,6 +10,7 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var MongoClient = require('mongodb').MongoClient;
+var ObjectID = require('mongodb').ObjectID
 
 // view engine setup
 app.set('views', './views');
@@ -28,8 +29,8 @@ app.use(express.static(__dirname+ '/public'));
 MongoClient.connect ("mongodb://localhost/GenesisDB",function (err,GenesisDB){
 if (err) throw err;
 
-  require('./routes/routes_www')(app,GenesisDB);
-  require('./routes/routes_API')(app,GenesisDB);
+  require('./routes/routes_www')(app,GenesisDB,ObjectID);
+  require('./routes/routes_API')(app,GenesisDB,ObjectID);
   require('./routes/routes_SocketIO')(io);
 });
 

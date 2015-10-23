@@ -7,6 +7,20 @@
  #messages { list-style-type: none; margin: 0; padding: 0; }
  #messages li { padding: 5px 10px; }
 
+ .margin-top{
+  margin-top: 5%;
+ }
+
+.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+    background-color: #00BCC6 !important;
+    border-color: #00BCC6 !important;
+}
+
+.active{
+  background-color: #00BCC6 !important;
+  border-color: #00BCC6 !important;
+}
+
  .footer
 {
     
