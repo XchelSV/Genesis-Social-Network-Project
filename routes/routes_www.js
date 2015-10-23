@@ -12,7 +12,7 @@ module.exports = (function (app,GenesisDB,ObjectId){
 
 		.get(function (request,response){
 
-			var id = new ObjectId("5629d94617a51e75b9bf71ad")
+			var id = new ObjectId("5629f42b54cd8bb6f9fac7d5")
 
 			GenesisDB.collection('user').findOne({"_id": id}, function (err, document){
 

@@ -26,7 +26,7 @@ app.use(cookieParser());
 app.use(express.static(__dirname+ '/public'));
 
 
-MongoClient.connect ("mongodb://localhost/GenesisDB",function (err,GenesisDB){
+MongoClient.connect ("mongodb://localhost:27017/GenesisDB",function (err,GenesisDB){
 if (err) throw err;
 
   require('./routes/routes_www')(app,GenesisDB,ObjectID);
