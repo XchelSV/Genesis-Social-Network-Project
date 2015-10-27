@@ -4,13 +4,17 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session    		= require('express-session');
+
 
 var app = express();
 
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var MongoClient = require('mongodb').MongoClient;
-var ObjectID = require('mongodb').ObjectID
+var ObjectID = require('mongodb').ObjectID;
+var mongoose = require('mongoose')
+
 
 // view engine setup
 app.set('views', './views');
@@ -22,17 +26,31 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(session({
+
+				secret: 'q~!!#s4HALA^MADRIDcds4<>>*S3--_-`´ç@',
+				saveUninitialized: 	false,
+				resave: 			false
+			}));
 
 app.use(express.static(__dirname+ '/public'));
 
 
-MongoClient.connect ("mongodb://localhost:27017/GenesisDB",function (err,GenesisDB){
-if (err) throw err;
-
-  require('./routes/routes_www')(app,GenesisDB,ObjectID);
-  require('./routes/routes_API')(app,GenesisDB,ObjectID);
-  require('./routes/routes_SocketIO')(io);
+var connStr = 'mongodb://localhost:27017/GenesisDB';
+mongoose.connect(connStr, function(err) {
+    if (err) throw err;
+    console.log('Successfully connected to MongoDB');
 });
+
+//MongoClient.connect ("mongodb://localhost/GenesisDB",function (err,GenesisDB){
+//if (err) throw err;
+
+
+
+  require('./routes/routes_www')(app,ObjectID);
+  require('./routes/routes_API')(app,ObjectID);
+  require('./routes/routes_SocketIO')(io);
+//});
 
 http.listen(1234,function () {
    

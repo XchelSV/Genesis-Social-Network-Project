@@ -1,4 +1,4 @@
-html
+html(lang = 'en',ng-app='Genesis')
 	head
 		meta(charset='utf-8') 
 		meta(http-equiv='X-UA-Compatible', content='IE=edge')
@@ -9,15 +9,15 @@ html
 	
 		script(type='text/javascript', src='js/jquery-1.11.1.min.js')
 		link(rel='stylesheet', type='text/css', href='css/bootstrap.min.css')
-		//script(type='text/javascript', src="js/angularmodule.js")
+		script(type='text/javascript', src="js/angularModule.js")
 		script(type='text/javascript', src='js/bootstrap.min.js')
 		link(rel='stylesheet', type='text/css', href='css/style.css')
 		link(rel='stylesheet', type='text/css',href='css/animate.css')
 
 		link(href='https://fonts.googleapis.com/css?family=Baumans' rel='stylesheet' type='text/css')
-		//script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular-route.js')
-		//script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular-cookies.js')
-	body.animated.fadeIn
+		script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular-route.js')
+		script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular-cookies.js')
+	body.animated.fadeIn(ng-controller='loginController')
 		.container
 			.row
 				.col-md-6
@@ -26,14 +26,16 @@ html
 					.login(style='margin-top:25%')
 						.heading
 							h2(align='center' style='color : #E6E6E6') ¡Bienvenidos Misioneros!
-							form(action='#')
+							form(method='post',action='/validateUser' )
 								.form-group.input-group.input-group-lg
 									span.input-group-addon
 										i.fa.fa-user
-									input.form-control(type='text', placeholder='Nombre de Usuario')
+									input.form-control(type='text', placeholder='Nombre de Usuario',name='name',required)
 								.form-group.input-group.input-group-lg
 									span.input-group-addon
 										i.fa.fa-lock
-									input.form-control(type='password', placeholder='Contraseña')
+									input.form-control(type='password', placeholder='Contraseña',name='pass',required)
 								button.btn.btn-lg.btn-info.btn-block(type='submit') Aceptar
+						.alert.alert-danger(role='alert',ng-show='cookiesAttempUser') ¡Upss! Hubo un error, ¡Tu nombre de Usuario es Incorrecto!
+						.alert.alert-danger(role='alert',ng-show='cookiesAttempPass') ¡Upss! Hubo un error, ¡Tu Contraseña es Incorrecta!
 				
