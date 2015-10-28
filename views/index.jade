@@ -36,18 +36,22 @@ html(lang='en',ng-app='Genesis')
             a(href='#')
               span Inicio
           li
-            a(href='#')
+            a(href='#', ng-show = 'session()')
               span Devocionales
           li
             a(href='#')
               span Misioneros
           li.last
-            a.cd-btn(href='#')
+            a.cd-btn(href='#' ,ng-show = 'session()')
               span Perfil
           ul.navbar-right
             li
-              a(href='/login')
+          
+              a(href='/login',ng-hide = 'session()')
                 span Iniciar Sesión
+         
+              a(href='/logout',ng-show = 'session()')
+                span Cerrar Sesión
 
     .container-fluid
       

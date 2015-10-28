@@ -1,4 +1,4 @@
-module.exports = (function (app,ObjectId){
+module.exports = (function (app,ObjectId,uuid){
 
 var bcrypt = require('bcrypt')	
 		//Models Requires
@@ -9,10 +9,7 @@ var  User = require('../Models/user_model');
 
 		.post(function (request,response){
 
-		/*User.findOne('',function (err,doc){
-			console.log(doc);
-		})*/
-
+		
 		/*	var NewUser = new User({
 				name: 'Panchito',
 				password: 'pass',
@@ -36,8 +33,17 @@ var  User = require('../Models/user_model');
 						console.log(pass);
 
 							if(pass){
-								request.session._id = user._id;
-								response.redirect('/')
+
+								var date = new Date(user.birthday);
+
+								request.session._id = uuid.v1();
+								response.cookie('session',request.session._id);
+								response.cookie('name',user.name);
+								response.cookie('day',date.getDate()+1);
+								response.cookie('month',date.getMonth()+1);
+								response.cookie('servicePlace',user.servicePlace);
+								response.cookie('biography',user.biography);
+								response.redirect('/');
 							}
 							else{
 								response.cookie('attempPass', true)
@@ -53,6 +59,26 @@ var  User = require('../Models/user_model');
 					response.render('login')
 					
 				}
+
+			})
+
+		})
+
+	app.route('/logout')
+
+		.get(function (request, response){
+
+			request.session.destroy(function (err){
+
+				response.clearCookie('name');
+				response.clearCookie('day');
+				response.clearCookie('month');
+				response.clearCookie('servicePlace');
+				response.clearCookie('biography');
+				response.clearCookie('session')
+				response.clearCookie('attempPass')
+				response.clearCookie('attempUser')
+				response.redirect('/');
 
 			})
 

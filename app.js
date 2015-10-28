@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session    		= require('express-session');
+var uuid = require('uuid');
 
 
 var app = express();
@@ -13,7 +14,7 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var MongoClient = require('mongodb').MongoClient;
 var ObjectID = require('mongodb').ObjectID;
-var mongoose = require('mongoose')
+var mongoose = require('mongoose');
 
 
 // view engine setup
@@ -28,6 +29,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(session({
 
+				genid: function (req){ return uuid.v1()},
 				secret: 'q~!!#s4HALA^MADRIDcds4<>>*S3--_-`´ç@',
 				saveUninitialized: 	false,
 				resave: 			false
@@ -48,7 +50,7 @@ mongoose.connect(connStr, function(err) {
 
 
   require('./routes/routes_www')(app,ObjectID);
-  require('./routes/routes_API')(app,ObjectID);
+  require('./routes/routes_API')(app,ObjectID,uuid);
   require('./routes/routes_SocketIO')(io);
 //});
 
