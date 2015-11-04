@@ -37,12 +37,14 @@ var  User = require('../Models/user_model');
 								var date = new Date(user.birthday);
 
 								request.session._id = uuid.v1();
-								response.cookie('session',request.session._id);
-								response.cookie('name',user.name);
-								response.cookie('day',date.getDate()+1);
-								response.cookie('month',date.getMonth()+1);
-								response.cookie('servicePlace',user.servicePlace);
-								response.cookie('biography',user.biography);
+								response.cookie('session',encodeURIComponent(request.session._id));
+
+								response.cookie('id', encodeURIComponent(user._id));
+								response.cookie('name',encodeURIComponent(user.name));
+								response.cookie('day',encodeURIComponent(date.getDate()+1));
+								response.cookie('month',encodeURIComponent(date.getMonth()+1));
+								response.cookie('servicePlace',encodeURIComponent(user.servicePlace));
+								response.cookie('biography',encodeURIComponent(user.biography));
 								response.redirect('/');
 							}
 							else{
@@ -70,6 +72,7 @@ var  User = require('../Models/user_model');
 
 			request.session.destroy(function (err){
 
+				response.clearCookie('id');
 				response.clearCookie('name');
 				response.clearCookie('day');
 				response.clearCookie('month');
@@ -83,6 +86,72 @@ var  User = require('../Models/user_model');
 			})
 
 		})
-		
+	
+	app.route('/user/:id')
+
+		.get(function (request, response){
+
+		})
+
+		.post(function (request, response){
+
+		})
+
+		.put(function (request, response){
+
+		})
+
+		.delete(function (request, response){
+			
+		})
+
+
+	app.route('/user')
+
+		.get(function (request, response){
+
+		})
+
+		.post(function (request, response){
+			var NewUser = new User({
+				name: request.body.name,
+				password: request.body.pass,
+				birthday: request.body.birth,
+				biography: request.body.bio,
+				servicePlace: request.body.place,
+				post: []
+			})
+
+			NewUser.save(function (err, user){
+				if (err) throw err;
+
+				var fs = require('fs')
+
+				   var path = request.files.photo.path;
+				   var newPath =  './public/img/userPhotos/'+user._id+'.jpg';
+
+				   var is = fs.createReadStream(path);
+				   var os = fs.createWriteStream(newPath);
+
+				   is.pipe(os)
+
+				   is.on('end', function() {
+					      //eliminamos el archivo temporal
+					   fs.unlinkSync(path);
+					})
+
+				response.redirect('/addUser');
+			})
+
+
+		})
+
+		.put(function (request, response){
+
+		})
+
+		.delete(function (request, response){
+			
+		})
 
 });

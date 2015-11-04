@@ -17,4 +17,15 @@ module.exports = (function (app,ObjectId){
 			response.render('login')
 		})
 
+	app.route('/addUser')
+
+		.get(function (request, response){
+			response.render('addUser')
+		})
+
+	app.route('/showUsers')
+
+		.get(function (request, response){
+			response.render('showUsers')
+		})
 });

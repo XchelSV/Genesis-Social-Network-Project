@@ -1,11 +1,12 @@
 doctype html
 html(lang='en',ng-app='Genesis')
   head
-    meta(http-equiv="Content-type" content="text/html;charset=UTF-8")
+    meta(http-equiv="Content-type" content="text/html" ,charset="UTF-8")
     meta(http-equiv='X-UA-Compatible', content='IE=edge')
     meta(name='viewport', content='width=device-width, initial-scale=1')
 
     link(href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700|Droid+Serif', rel='stylesheet', type='text/css')
+    link(href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css')
     link(rel='stylesheet', type='text/css', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css')
     link(rel='stylesheet',type='text/css', href='css/reset.css')
     link(rel='stylesheet', type='text/css',href='css/animate.css')
@@ -33,13 +34,13 @@ html(lang='en',ng-app='Genesis')
       #cssmenu
         ul
           li.active
-            a(href='#')
+            a(href='/')
               span Inicio
           li
             a(href='#', ng-show = 'session()')
               span Devocionales
           li
-            a(href='#')
+            a(href='/showUsers')
               span Misioneros
           li.last
             a.cd-btn(href='#' ,ng-show = 'session()')
@@ -75,7 +76,7 @@ html(lang='en',ng-app='Genesis')
             .row
               .col-md-4.col-md-offset-1
                 a.thumbnail(href='#')
-                  img.img-responsive.img-rounded(src='img/426761_2771498492001_549053074_n.jpg', alt='img-responsive')
+                  img.img-responsive.img-rounded(src='img/userPhotos/{{id}}.jpg', alt='img-responsive')
 
               .col-md-7
                 .well.well-lg

@@ -15,7 +15,7 @@ Primary style
 
 body {
   font-size: 100%;
-  font-family: "Droid Sans", sans-serif;
+  font-family: "Raleway", sans-serif;
   
   
 }
@@ -384,5 +384,8 @@ footer {
     font-size: 16px;
     font-size: 1rem;
     line-height: 1.6;
+  }
+  h2{
+    font-family: 'Raleway', sans-serif;
   }
 }
