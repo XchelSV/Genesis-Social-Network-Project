@@ -54,6 +54,16 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies']);
 		$scope.servicePlace = decodeURIComponent($cookies.servicePlace);
 		$scope.biography = decodeURIComponent($cookies.biography);
 
+		$http.get('/user').
+
+			success(function(data, status, headers, config) {
+				 $scope.missionaries = data;
+				 
+		 	}).
+			error(function(data, status, headers, config) {
+				      // log error
+			});
+
 	});
 
 	app.controller('loginController', function ($scope, $http, $cookies){

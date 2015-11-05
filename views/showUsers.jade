@@ -57,10 +57,32 @@ html(lang='en',ng-app='Genesis')
     .container-fluid
       
       main.cd-main-content
-        .jumbotron(style = 'margin-top : 1%')
-          h2(style='font-size: 150%')
-          
+        .jumbotron.animated.fadeIn(style = 'margin-top : 1%')
+          h2(style='font-size: 150%') Misioneros Activos
+          p
+            .row(style='margin-top: 3%')
+              .col-md-8.col-md-offset-2
+                .table-responsive
+                  table.table.table-hover
+                    tr.info
+                      td Perfil
+                      td Misionero
+                      td Lugar de Servicio
+                      td Publicaciones
+                      
+                   
+                    tr(ng-repeat='missionary in missionaries')
+                        td 
+                          a(href='#')
+                            img(src='img/userPhotos/{{missionary._id}}.jpg',height='30',width='30').img-circle
+                        td {{missionary.name}}
+                        td {{missionary.servicePlace}}
+                        td {{missionary.post.length}}
 
+            .row(style='margin-top:4%')
+              .col-md-3.col-md-offset-8
+                a(href='/addUser')
+                  button.btn.btn-primary.btn-lg() Registrar Misionero
 
 
         //panel for real time chat

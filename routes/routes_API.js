@@ -110,6 +110,12 @@ var  User = require('../Models/user_model');
 
 		.get(function (request, response){
 
+			User.find('',function (err, docs){
+				if (err) throw err;
+				console.log(docs);
+				response.send(docs);
+			})
+
 		})
 
 		.post(function (request, response){
