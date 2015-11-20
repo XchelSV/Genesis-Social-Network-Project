@@ -66,6 +66,84 @@ var  User = require('../Models/user_model');
 
 		})
 
+
+	app.route('/validateUserApp')
+
+		.post(function (request,response){
+
+		
+		/*	var NewUser = new User({
+				name: 'Panchito',
+				password: 'pass',
+				birthday: Date('2014-10-26'),
+				biography: '',
+				servicePlace: 'Republica Dominicana',
+				post: [{body:'OLa ke ace? :v', like:2, pray4You:6, date:Date('2014-10-26')}]
+			})
+
+			NewUser.save(function (err){
+				if (err) throw err;
+			})*/
+			
+			User.findOne({name : request.body.name}, function (err , user){
+				if (err) throw err;
+				//console.log(user);
+
+				if(user != undefined){
+					user.comparePassword(request.body.pass, function (err , pass){
+						if (err) throw err;
+						//console.log(pass);
+
+							if(pass){
+
+								//var date = new Date(user.birthday);
+								var UIDSession = uuid.v1();
+								request.session._id = UIDSession;
+								response.send(UIDSession);
+								/*response.cookie('session',encodeURIComponent(request.session._id));
+
+								response.cookie('id', encodeURIComponent(user._id));
+								response.cookie('name',encodeURIComponent(user.name));
+								response.cookie('day',encodeURIComponent(date.getDate()+1));
+								response.cookie('month',encodeURIComponent(date.getMonth()+1));
+								response.cookie('servicePlace',encodeURIComponent(user.servicePlace));
+								response.cookie('biography',encodeURIComponent(user.biography));
+								response.redirect('/');*/
+							}
+							else{
+								/*response.cookie('attempPass', true)
+								response.cookie('attempUser', false)
+								response.render('login')*/
+								response.send(404);
+							}
+					})
+				}else
+				{
+					/*response.cookie('attempUser', true)
+					response.cookie('attempPass', false)
+					response.render('login')*/
+					response.send(404);
+					
+				}
+
+			})
+
+		})
+		
+
+	app.route('/logoutApp')
+
+		.get(function (request, response){
+
+			request.session.destroy(function (err){
+
+				response.sendStatus(200);
+
+			})
+
+		})
+
+
 	app.route('/logout')
 
 		.get(function (request, response){
