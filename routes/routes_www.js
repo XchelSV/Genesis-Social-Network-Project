@@ -20,12 +20,26 @@ module.exports = (function (app,ObjectId){
 	app.route('/addUser')
 
 		.get(function (request, response){
-			response.render('addUser')
+			if (request.session._id){
+				response.render('addUser')
+			}
+			else{
+				request.session.destroy(function (err){
+				response.redirect('/');
+				})
+			}
 		})
 
 	app.route('/showUsers')
 
 		.get(function (request, response){
-			response.render('showUsers')
+			if (request.session._id){
+				response.render('showUsers')
+			}
+			else{
+				request.session.destroy(function (err){
+				response.redirect('/');
+				})
+			}
 		})
 });
