@@ -1,4 +1,4 @@
-module.exports = (function (app,ObjectId,uuid){
+module.exports = (function (app,ObjectId,uuid,RedisClient){
 
 var bcrypt = require('bcrypt')	
 		//Models Requires
@@ -36,7 +36,7 @@ var  User = require('../Models/user_model');
 
 								var date = new Date(user.birthday);
 
-								request.session._id = uuid.v1();
+								request.session._id = uuid.v4();
 								response.cookie('session',encodeURIComponent(request.session._id));
 
 								response.cookie('id', encodeURIComponent(user._id));
@@ -67,7 +67,7 @@ var  User = require('../Models/user_model');
 		})
 
 
-	app.route('/validateUserApp')
+	app.route('/api/validateUser')
 
 		.post(function (request,response){
 
@@ -81,8 +81,12 @@ var  User = require('../Models/user_model');
 
 							if(pass){
 								
-								var UIDSession = uuid.v1();
+								var UIDSession = uuid.v4();
 								request.session._id = UIDSession;
+								RedisClient.set(UIDSession , user._id, function (err, value){
+									console.log('Token de Session: '+value);
+								});
+								RedisClient.expire(UIDSession,3600);
 								response.send(UIDSession);
 								
 							}
@@ -144,6 +148,45 @@ var  User = require('../Models/user_model');
 		})
 
 		.post(function (request, response){
+
+		})
+
+		.put(function (request, response){
+
+		})
+
+		.delete(function (request, response){
+			
+		})
+
+	app.route('/api/user')
+
+		.get(function (request, response){ 	
+
+
+		})
+
+		.post(function (request, response){
+
+			RedisClient.exists(request.body.token, function (err, reply){
+
+				if(reply===1){
+			//if (request.session._id){
+				User.find('',function (err, docs){
+					if (err) throw err;
+					console.log(docs);
+					response.send(docs);
+				})
+			} else {
+				response.send(404);
+			}
+			/*}
+			else{
+				request.session.destroy(function (err){
+					response.sendStatus(404);
+				})
+			}*/
+			});
 
 		})
 
