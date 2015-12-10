@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var session    		= require('express-session');
 var uuid = require('uuid');
 var multipart = require('connect-multiparty');
+var redis = require('redis');
 
 
 var app = express();
@@ -16,6 +17,7 @@ var io = require('socket.io')(http);
 var MongoClient = require('mongodb').MongoClient;
 var ObjectID = require('mongodb').ObjectID;
 var mongoose = require('mongoose');
+var client = redis.createClient();
 
 
 // view engine setup
@@ -46,13 +48,16 @@ mongoose.connect(connStr, function(err) {
     console.log('Successfully connected to MongoDB');
 });
 
+client.on('connect', function (){
+    console.log('New Redis Client Connect since now');
+});
 //MongoClient.connect ("mongodb://localhost/GenesisDB",function (err,GenesisDB){
 //if (err) throw err;
 
 
 
   require('./routes/routes_www')(app,ObjectID);
-  require('./routes/routes_API')(app,ObjectID,uuid);
+  require('./routes/routes_API')(app,ObjectID,uuid,client);
   require('./routes/routes_SocketIO')(io);
 //});
 
