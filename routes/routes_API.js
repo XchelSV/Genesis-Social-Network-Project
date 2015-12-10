@@ -158,7 +158,7 @@ var  User = require('../Models/user_model');
 
 	app.route('/user')
 
-		.get(function (request, response){
+		.get(function (request, response){ 	
 
 			//if (request.session._id){
 				User.find('',function (err, docs){
