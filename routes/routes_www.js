@@ -33,6 +33,7 @@ module.exports = (function (app,ObjectId){
 	app.route('/showUsers')
 
 		.get(function (request, response){
+			
 			if (request.session._id){
 				response.render('showUsers')
 			}
@@ -41,5 +42,7 @@ module.exports = (function (app,ObjectId){
 				response.redirect('/');
 				})
 			}
+				
+			
 		})
 });
