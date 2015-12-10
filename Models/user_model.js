@@ -8,8 +8,10 @@ var mongoose = require('mongoose'),
     	body:{type:String},
     	like:{type : Number},
     	pray4You:{type: Number},
-    	date:{type:Date}
-
+    	date:{type:Date},
+    	img:{type:Boolean},
+    	audio:{type:Boolean},
+    	video:{type:Boolean}
     })
 
     var UserSchema = new Schema({
