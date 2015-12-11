@@ -37,6 +37,10 @@ var  User = require('../Models/user_model');
 								var date = new Date(user.birthday);
 
 								request.session._id = uuid.v4();
+								RedisClient.set(request.session._id , user._id, function (err, value){
+									console.log('Token de Session: '+value);
+								});
+								RedisClient.expire(request.session._id,3600);
 								response.cookie('session',encodeURIComponent(request.session._id));
 
 								response.cookie('id', encodeURIComponent(user._id));
@@ -67,7 +71,7 @@ var  User = require('../Models/user_model');
 		})
 
 
-	app.route('/api/validateUser')
+	app.route('/api/login')
 
 		.post(function (request,response){
 
@@ -92,13 +96,13 @@ var  User = require('../Models/user_model');
 							}
 							else{
 								
-								response.send(404);
+								response.sendStatus(404);
 							}
 					})
 				}else
 				{
 	
-					response.send(404);
+					response.sendStatus(404);
 					
 				}
 
@@ -107,13 +111,16 @@ var  User = require('../Models/user_model');
 		})
 		
 
-	app.route('/logoutApp')
+	app.route('/api/logout')
 
-		.get(function (request, response){
+		.post(function (request, response){
 
+			
 			request.session.destroy(function (err){
 
-				response.sendStatus(200);
+				RedisClient.del(request.body.token, function (err,reply){
+					response.sendStatus(200);
+				})
 
 			})
 
@@ -124,21 +131,26 @@ var  User = require('../Models/user_model');
 
 		.get(function (request, response){
 
-			request.session.destroy(function (err){
+			RedisClient.del(request.session._id, function (err,reply){
+				
+				request.session.destroy(function (err){
 
-				response.clearCookie('id');
-				response.clearCookie('name');
-				response.clearCookie('day');
-				response.clearCookie('month');
-				response.clearCookie('servicePlace');
-				response.clearCookie('biography');
-				response.clearCookie('session')
-				response.clearCookie('attempPass')
-				response.clearCookie('attempUser')
-				response.redirect('/');
+					response.clearCookie('id');
+					response.clearCookie('name');
+					response.clearCookie('day');
+					response.clearCookie('month');
+					response.clearCookie('servicePlace');
+					response.clearCookie('biography');
+					response.clearCookie('session')
+					response.clearCookie('attempPass')
+					response.clearCookie('attempUser')
+					response.redirect('/');
+
+				})
+
 
 			})
-
+			
 		})
 	
 	app.route('/user/:id')
