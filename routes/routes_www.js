@@ -34,14 +34,8 @@ module.exports = (function (app,ObjectId){
 
 		.get(function (request, response){
 			
-			if (request.session._id){
+			
 				response.render('showUsers')
-			}
-			else{
-				request.session.destroy(function (err){
-				response.redirect('/');
-				})
-			}
 				
 			
 		})
