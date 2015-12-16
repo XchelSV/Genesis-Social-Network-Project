@@ -186,4 +186,50 @@ var  User = require('../Models/user_model');
 			
 		})
 
+	app.route('/posts')
+
+		.get(function (request, response){
+			User.find('','ObjectId name post',function (err, docs){
+
+				if (err) throw err;
+				
+				console.log(docs);
+				response.send(docs);
+
+			})
+		})
+
+		.post(function (request, response){
+
+			User.update({'_id':request.body.id},{$pushAll: {post: [{body:request.body.body ,like:0 ,pray4You:0 ,date:request.body.date ,img:request.body.img ,video:request.body.video ,audio:request.body.audio }]}},{upsert:true}, function (err, doc){
+
+				if (err) {throw err;} else{
+
+					if(request.body.img == true){
+					   
+					   var fs = require('fs')
+
+					   var path = request.files.file.path;
+					   var newPath =  './public/img/postPhotos/'+doc._id+'.jpg';
+
+					   var is = fs.createReadStream(path);
+					   var os = fs.createWriteStream(newPath);
+
+					   is.pipe(os)
+
+					   is.on('end', function() {
+						      //eliminamos el archivo temporal
+						   fs.unlinkSync(path);
+						})
+					}
+
+					console.log('Succesfully Added Post in User'+request.body.id);
+					response.sendStatus(200);
+				}
+
+
+			})
+
+		})
+
 });
