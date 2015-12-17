@@ -201,16 +201,21 @@ var  User = require('../Models/user_model');
 
 		.post(function (request, response){
 
-			User.update({'_id':request.body.id},{$pushAll: {post: [{body:request.body.body ,like:0 ,pray4You:0 ,date:request.body.date ,img:request.body.img ,video:request.body.video ,audio:request.body.audio }]}},{upsert:true}, function (err, doc){
+			var tokenid = new ObjectId();
+			User.findByIdAndUpdate({'_id':request.body.id},{$pushAll: {post: [{_id:tokenid,body:request.body.body ,like:0 ,pray4You:0 ,date:request.body.date ,img:request.body.img ,video:request.body.video ,audio:request.body.audio }]}},{upsert:true}, function (err, doc){
 
-				if (err) {throw err;} else{
+				if (err) throw err;
 
-					if(request.body.img == true){
+					var flag =  request.body.img;
+					console.log('Flag is '+flag);
+
+					if(request.files.file != undefined){
 					   
+					   console.log('Post Id: '+tokenid);
 					   var fs = require('fs')
 
 					   var path = request.files.file.path;
-					   var newPath =  './public/img/postPhotos/'+doc._id+'.jpg';
+					   var newPath =  './public/img/postPhotos/'+tokenid+'.jpg';
 
 					   var is = fs.createReadStream(path);
 					   var os = fs.createWriteStream(newPath);
@@ -223,9 +228,8 @@ var  User = require('../Models/user_model');
 						})
 					}
 
-					console.log('Succesfully Added Post in User'+request.body.id);
+					console.log('Succesfully Added Post in User '+request.body.id);
 					response.sendStatus(200);
-				}
 
 
 			})
