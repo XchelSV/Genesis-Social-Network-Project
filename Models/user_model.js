@@ -11,8 +11,9 @@ var mongoose = require('mongoose'),
     	date:{type:Date},
     	img:{type:Boolean},
     	audio:{type:Boolean},
-    	video:{type:Boolean}
-    })
+    	video:{type:Boolean},
+    	_id:{type:String}
+    },{_id:false})
 
     var UserSchema = new Schema({
 	    name: { type: String, required: true },
