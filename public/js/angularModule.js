@@ -75,6 +75,7 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies']);
 					fileUpload.uploadFileToUrl(file,$scope.id, $scope.postText, true,false,false ,uploadUrl);
 
 						$scope.postText = '';
+						$scope.myFile = null;
 						
 						var d = document.getElementById("myModal");
 						d.className = d.className + "bounceOut";
@@ -88,7 +89,8 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies']);
 					fileUpload.uploadFileToUrl(file,$scope.id, $scope.postText, false,false,false ,uploadUrl);
 
 						$scope.postText = '';
-						
+						$scope.myFile = null;
+												
 						var d = document.getElementById("myModal");
 						d.className = d.className + "bounceOut";
 
