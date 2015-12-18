@@ -3,6 +3,7 @@ module.exports = (function (app,ObjectId,uuid,RedisClient){
 var bcrypt = require('bcrypt')	
 		//Models Requires
 var  User = require('../Models/user_model');
+var  Post = require('../Models/post_model');
 
 
 	app.route('/validateUser')
@@ -145,7 +146,7 @@ var  User = require('../Models/user_model');
 					birthday: request.body.birth,
 					biography: request.body.bio,
 					servicePlace: request.body.place,
-					post: []
+					
 				})
 
 				NewUser.save(function (err, user){
@@ -189,11 +190,11 @@ var  User = require('../Models/user_model');
 	app.route('/posts')
 
 		.get(function (request, response){
-			User.find('','ObjectId name post',function (err, docs){
+			Post.find('','',{skip:0,limit:15,sort:{date:-1}},function (err, docs){
 
 				if (err) throw err;
 				
-				console.log(docs);
+				console.log('Existing Posts: '+docs+' Data Length: '+docs.length);
 				response.send(docs);
 
 			})
@@ -201,8 +202,21 @@ var  User = require('../Models/user_model');
 
 		.post(function (request, response){
 
-			var tokenid = new ObjectId();
-			User.findByIdAndUpdate({'_id':request.body.id},{$pushAll: {post: [{_id:tokenid,body:request.body.body ,like:0 ,pray4You:0 ,date:request.body.date ,img:request.body.img ,video:request.body.video ,audio:request.body.audio }]}},{upsert:true}, function (err, doc){
+			var NewPost = new Post({
+
+				user_id:request.body.id,
+				userName:request.body.name,
+				body:request.body.body,
+				like:0,
+				pray4You:0,
+				date:request.body.date,
+				img:request.body.img,
+				audio:request.body.audio,
+				video:request.body.video
+
+			});	
+
+			NewPost.save(function (err,save){
 
 				if (err) throw err;
 
@@ -211,11 +225,11 @@ var  User = require('../Models/user_model');
 
 					if(request.files.file != undefined){
 					   
-					   console.log('Post Id: '+tokenid);
+					   console.log('Post Id: '+save._id);
 					   var fs = require('fs')
 
 					   var path = request.files.file.path;
-					   var newPath =  './public/img/postPhotos/'+tokenid+'.jpg';
+					   var newPath =  './public/img/postPhotos/'+save._id+'.jpg';
 
 					   var is = fs.createReadStream(path);
 					   var os = fs.createWriteStream(newPath);
