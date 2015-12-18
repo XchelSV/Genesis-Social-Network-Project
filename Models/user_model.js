@@ -3,17 +3,6 @@ var mongoose = require('mongoose'),
     bcrypt = require('bcrypt'),
     SALT_WORK_FACTOR = 10;
 
-    //Schema Definition
-    var PostSchema = new Schema({
-    	body:{type:String},
-    	like:{type : Number},
-    	pray4You:{type: Number},
-    	date:{type:Date},
-    	img:{type:Boolean},
-    	audio:{type:Boolean},
-    	video:{type:Boolean},
-    	_id:{type:String}
-    },{_id:false})
 
     var UserSchema = new Schema({
 	    name: { type: String, required: true },
@@ -21,7 +10,6 @@ var mongoose = require('mongoose'),
 	    birthday:{ type : Date },
 	    biography: { type : String },
 	    servicePlace : { type : String},
-	    post : [PostSchema]
 	});
 
 

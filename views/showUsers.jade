@@ -68,7 +68,7 @@ html(lang='en',ng-app='Genesis')
                       td Perfil
                       td Misionero
                       td Lugar de Servicio
-                      td Publicaciones
+                      //td Publicaciones
                       
                    
                     tr(ng-repeat='missionary in missionaries')
@@ -77,7 +77,7 @@ html(lang='en',ng-app='Genesis')
                             img(src='img/userPhotos/{{missionary._id}}.jpg',height='30',width='30').img-circle
                         td {{missionary.name}}
                         td {{missionary.servicePlace}}
-                        td {{missionary.post.length}}
+                        //td {{missionary.post.length}}
 
             .row(style='margin-top:4%')
               .col-md-3.col-md-offset-8
