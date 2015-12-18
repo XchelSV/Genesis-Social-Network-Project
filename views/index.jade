@@ -73,18 +73,23 @@ html(lang='en',ng-app='Genesis')
 
                 
                 
+          //
+            .col-md-4(ng-repeat='user in users')
+              .well
+                .container-fluid
+                  .row
+                    .col-md-2
+                      img(src='img/userPhotos/{{user._id}}.jpg',height='35',width='35').img-circle
+                    .col-md-6(style='margin-top:3%')
+                      strong
+                        {{user.name}}
+                  .row
+                    .col-md-12
 
-            .col-md-4
-              .well
-                | I'm a well
+                  .row
+                    .col-md-12
 
-          .row
-            .col-md-4.col-md-offset-2
-              .well
-                | I'm a well
-            .col-md-4
-              .well
-                | I'm a well
+          
 
 
                 
