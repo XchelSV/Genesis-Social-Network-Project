@@ -17,10 +17,11 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies']);
 	}]);
 
 	app.service('fileUpload', ['$http', function ($http) {
-	    this.uploadFileToUrl = function(file,id,text,img,video,audio, uploadUrl){
+	    this.uploadFileToUrl = function(file,id,name,text,img,video,audio, uploadUrl){
 	        var fd = new FormData();
 	        fd.append('file', file);
 	        fd.append('id',id);
+	        fd.append('name',name)
 	        fd.append('body',text);
 	        fd.append('img',img);
 	        fd.append('video',video);
@@ -61,6 +62,16 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies']);
 
 		$scope.animation = false;
 
+
+		$http.get('/posts').success(function (data, status, headers, config){
+			
+			$scope.posts = data;
+
+		})
+		.error(function (){
+			alert('AJAX posts erros');
+		})
+
 		$scope.post = function (){
 
 			if($scope.postText == '' && $scope.myFile == undefined){
@@ -72,10 +83,10 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies']);
 
 					var file = $scope.myFile;
 					var uploadUrl = '/posts';
-					fileUpload.uploadFileToUrl(file,$scope.id, $scope.postText, true,false,false ,uploadUrl);
+					fileUpload.uploadFileToUrl(file,$scope.id, $scope.name,$scope.postText, true,false,false ,uploadUrl);
 
 						$scope.postText = '';
-						$scope.myFile = null;
+						$scope.myFile = undefined;
 						
 						var d = document.getElementById("myModal");
 						d.className = d.className + "bounceOut";
@@ -86,10 +97,10 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies']);
 
 					var file = $scope.myFile;
 					var uploadUrl = '/posts';
-					fileUpload.uploadFileToUrl(file,$scope.id, $scope.postText, false,false,false ,uploadUrl);
+					fileUpload.uploadFileToUrl(file,$scope.id,$scope.name, $scope.postText, false,false,false ,uploadUrl);
 
 						$scope.postText = '';
-						$scope.myFile = null;
+						$scope.myFile = undefined;
 												
 						var d = document.getElementById("myModal");
 						d.className = d.className + "bounceOut";
@@ -139,11 +150,11 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies']);
 
 		$http.get('/user').
 
-			success(function(data, status, headers, config) {
+			success(function (data, status, headers, config) {
 				 $scope.missionaries = data;
 				 
 		 	}).
-			error(function(data, status, headers, config) {
+			error(function (data, status, headers, config) {
 				      // log error
 			});
 
