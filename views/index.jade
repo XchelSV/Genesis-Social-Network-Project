@@ -73,19 +73,18 @@ html(lang='en',ng-app='Genesis')
 
                 
                 
-          //
-            .col-md-4(ng-repeat='user in users')
-              .well
-                .container-fluid
+          
+            .col-md-4(ng-repeat='post in posts')
+              .well.animated.bounceInUp
                   .row
                     .col-md-2
-                      img(src='img/userPhotos/{{user._id}}.jpg',height='35',width='35').img-circle
+                      img(src='img/userPhotos/{{post.user_id}}.jpg',height='35',width='35').img-circle
                     .col-md-6(style='margin-top:3%')
                       strong
-                        {{user.name}}
-                  .row
-                    .col-md-12
-
+                        {{post.userName}}
+                  .row(style='margin-top:5%')
+                    .col-md-14
+                      img(src='img/postPhotos/{{post._id}}.jpg',ng-show='{{post.img}}').img-responsive
                   .row
                     .col-md-12
 

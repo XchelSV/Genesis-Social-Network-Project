@@ -17,7 +17,7 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies']);
 	}]);
 
 	app.service('fileUpload', ['$http', function ($http) {
-	    this.uploadFileToUrl = function(file,id,name,text,img,video,audio, uploadUrl){
+	    this.uploadFileToUrl = function(file,id,name,text,img,video,audio, uploadUrl,posts){
 	        var fd = new FormData();
 	        fd.append('file', file);
 	        fd.append('id',id);
@@ -34,8 +34,9 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies']);
 	            transformRequest: angular.identity,
 	            headers: {'Content-Type': undefined}
 	        })
-	        .success(function(){
+	        .success(function(data, status, headers, config){
 
+	        	posts.unshift(data);
 
 	        })
 	        .error(function(){
@@ -61,6 +62,7 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies']);
 		$scope.biography = decodeURIComponent($cookies.biography);
 
 		$scope.animation = false;
+		$scope.posts = [];
 
 
 		$http.get('/posts').success(function (data, status, headers, config){
@@ -83,7 +85,7 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies']);
 
 					var file = $scope.myFile;
 					var uploadUrl = '/posts';
-					fileUpload.uploadFileToUrl(file,$scope.id, $scope.name,$scope.postText, true,false,false ,uploadUrl);
+					var NewPost = fileUpload.uploadFileToUrl(file,$scope.id, $scope.name,$scope.postText, true,false,false ,uploadUrl,$scope.posts);
 
 						$scope.postText = '';
 						$scope.myFile = undefined;
@@ -97,10 +99,10 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies']);
 
 					var file = $scope.myFile;
 					var uploadUrl = '/posts';
-					fileUpload.uploadFileToUrl(file,$scope.id,$scope.name, $scope.postText, false,false,false ,uploadUrl);
-
+					var NewPost = fileUpload.uploadFileToUrl(file,$scope.id,$scope.name, $scope.postText, false,false,false ,uploadUrl,$scope.posts);
 						$scope.postText = '';
 						$scope.myFile = undefined;
+
 												
 						var d = document.getElementById("myModal");
 						d.className = d.className + "bounceOut";
