@@ -45,14 +45,15 @@ var  User = require('../Models/user_model');
 		})
 		
 
-	app.route('/api/logout')
+	app.route('/api/logout/:token')
 
-		.post(function (request, response){
+		.get(function (request, response){
 
+			var token = request.params.token;
 			
 			request.session.destroy(function (err){
 
-				RedisClient.del(request.body.token, function (err,reply){
+				RedisClient.del(token, function (err,reply){
 					response.sendStatus(200);
 				})
 
@@ -62,16 +63,13 @@ var  User = require('../Models/user_model');
 
 
 
-	app.route('/api/user')
+	app.route('/api/user/:token')
 
-		.get(function (request, response){ 	
+		.get(function (request, response){
 
+			var token = request.params.token;
 
-		})
-
-		.post(function (request, response){
-
-			RedisClient.exists(request.body.token, function (err, reply){
+			RedisClient.exists(token, function (err, reply){
 
 				if(reply===1){
 			//if (request.session._id){

@@ -243,7 +243,7 @@ var  Post = require('../Models/post_model');
 					}
 
 					console.log('Succesfully Added Post in User '+request.body.id);
-					response.sendStatus(200);
+					response.send(save);
 
 
 			})
