@@ -58,6 +58,7 @@ client.on('connect', function (){
 
   require('./routes/routes_www')(app,ObjectID);
   require('./routes/routes_API')(app,ObjectID,uuid,client);
+  require('./routes/routes_API_app')(app,ObjectID,uuid,client);
   require('./routes/routes_SocketIO')(io);
 //});
 
