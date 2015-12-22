@@ -101,57 +101,34 @@ var  Post = require('../Models/post_model');
 			
 		})
 
-	app.route('/api/user/img/:token/:_id')
+	app.route('/api/user/img/:_id')
 
 		.get(function (request,response){
 
-			var token = request.params.token;
 			var userId = request.params._id;
 
-			RedisClient.exists(token, function (err, reply){
-
-				if(reply===1){
-
 					response.sendFile(path.join(__dirname, '../public/img/userPhotos/'+userId+'.jpg'));
-				
-				} else {
-					response.send(404);
-				}
-			});
-
 
 		})
+		
 
-	app.route('/api/post/img/:token/:_id')
+	app.route('/api/post/img/:_id')
 
 		.get(function (request,response){
 
-			var token = request.params.token;
 			var postId = request.params._id;
 
-			RedisClient.exists(token, function (err, reply){
-
-				if(reply===1){
+			
 
 					response.sendFile(path.join(__dirname, '../public/img/postPhotos/'+postId+'.jpg'));
-				
-				} else {
-					response.send(404);
-				}
-			});
 
 
 		})
 
-	app.route('/api/post/:token')
+	app.route('/api/post')
 
 		.get(function (request,response){
-
-			var token = request.params.token;
-
-				RedisClient.exists(token, function (err, reply){
-
-					if(reply===1){
+				
 
 						Post.find('','',{sort:{date:-1}},function (err, docs){
 
@@ -159,11 +136,6 @@ var  Post = require('../Models/post_model');
 							response.send(docs);
 						});
 					
-					} else {
-						response.send(404);
-					}
-			
-			})
 
 		})
 
