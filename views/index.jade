@@ -60,9 +60,9 @@ html(lang='en',ng-app='Genesis')
       main.cd-main-content
         .jumbotron(style = 'margin-top : 1%')
           .row
-            .col-md-4.col-md-offset-2
+            .col-md-4.col-md-offset-2(ng-if='session()')
               a(href='#myModal', data-toggle="modal")
-                .well(ng-show='session()')
+                .well()
                   .row
                     .col-md-2
                       img(src='img/userPhotos/{{id}}.jpg',height='35',width='35').img-circle
@@ -76,15 +76,21 @@ html(lang='en',ng-app='Genesis')
           
             .col-md-4(ng-repeat='post in posts')
               .well.animated.bounceInUp
+                  
                   .row
-                    .col-md-2
-                      img(src='img/userPhotos/{{post.user_id}}.jpg',height='35',width='35').img-circle
-                    .col-md-6(style='margin-top:3%')
-                      strong
+                      .col-md-3
+                        img(src='img/userPhotos/{{post.user_id}}.jpg',height='35',width='35').img-circle
+
+                    .col-md-9(style='margin-top:-8%')
+                    
                         {{post.userName}}
-                  .row(style='margin-top:5%')
+                  .row(style='margin-top:5%',ng-if='post.img')
                     .col-md-14
-                      img(src='img/postPhotos/{{post._id}}.jpg',ng-show='{{post.img}}').img-responsive
+                      img(src='img/postPhotos/{{post._id}}.jpg').img-responsive
+                  .row(style='margin-top:5%')
+                    .col-md-10.col-md-offset-1
+                      {{post.body}}
+
                   .row
                     .col-md-12
 
