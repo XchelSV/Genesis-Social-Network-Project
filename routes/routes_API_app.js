@@ -4,6 +4,7 @@ var bcrypt = require('bcrypt')
 var path = require('path');
 		//Models Requires
 var  User = require('../Models/user_model');
+var  Post = require('../Models/post_model');
 
 
 	app.route('/api/login')
@@ -139,6 +140,30 @@ var  User = require('../Models/user_model');
 				}
 			});
 
+
+		})
+
+	app.route('/api/post/:token')
+
+		.get(function (request,response){
+
+			var token = request.params.token;
+
+				RedisClient.exists(token, function (err, reply){
+
+					if(reply===1){
+
+						Post.find('','',{sort:{date:-1}},function (err, docs){
+
+							if (err) throw err;
+							response.send(docs);
+						});
+					
+					} else {
+						response.send(404);
+					}
+			
+			})
 
 		})
 
