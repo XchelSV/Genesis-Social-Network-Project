@@ -179,8 +179,8 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies','angular-uuid']);
 						$scope.myFile = undefined;
 
 												
-						var d = document.getElementById("myModal");
-						d.className = d.className + "bounceOut";
+						var postModal = angular.element(document.querySelector('#postModal'));
+						postModal.modal('hide');
 
 					
 				}
