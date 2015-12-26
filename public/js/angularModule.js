@@ -1,4 +1,4 @@
-var app = angular.module('Genesis',['ngRoute', 'ngCookies']);
+var app = angular.module('Genesis',['ngRoute', 'ngCookies','angular-uuid']);
 	
 	app.directive('fileModel', ['$parse', function ($parse) {
 	   	 return {
@@ -44,7 +44,7 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies']);
 	    }
 	}]);
 	
-	app.controller('indexController',function  ($scope, $http, $cookies, fileUpload) {
+	app.controller('indexController',function  ($scope, $http, $cookies, fileUpload, uuid) {
 		
 		$scope.session = function(){
 			if($cookies.session != undefined){
@@ -54,6 +54,7 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies']);
 				return false;
 			}
 		}
+
 		$scope.id = decodeURIComponent($cookies.id);
 		$scope.name = decodeURIComponent($cookies.name);
 		$scope.day = decodeURIComponent($cookies.day);
@@ -61,7 +62,13 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies']);
 		$scope.servicePlace = decodeURIComponent($cookies.servicePlace);
 		$scope.biography = decodeURIComponent($cookies.biography);
 
-		$scope.animation = false;
+		if ($cookies.session == undefined) {
+			if ($cookies.temporalSession == undefined) {
+				$cookies.temporalSession = uuid.v4();
+			};
+		}
+		console.log($cookies.temporalSession);
+
 		$scope.posts = [];
 
 
@@ -73,6 +80,74 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies']);
 		.error(function (){
 			alert('AJAX posts erros');
 		})
+
+		$scope.like = function (postId){
+
+			
+			if ($cookies.session){
+
+				var userId = $cookies.session;
+				$http.post('/post/like',{userId:userId,postId:postId}).success(function (data, status, headers, config){
+	
+					var likeModal = angular.element(document.querySelector('#likeModal'));
+					likeModal.modal('show');
+				})
+				.error(function (){
+					alert('AJAX error in post like');
+				})
+
+			}
+
+			if ($cookies.temporalSession){
+
+				var userId = $cookies.temporalSession;
+				$http.post('/post/like',{userId:userId,postId:postId}).success(function (data, status, headers, config){
+	
+					var likeModal = angular.element(document.querySelector('#likeModal'));
+					likeModal.modal('show');
+
+				})
+				.error(function (){
+					alert('AJAX error in post like');
+				})
+
+			}
+
+		}
+
+		$scope.pray4You = function (postId){
+
+			
+			if ($cookies.session){
+
+				var userId = $cookies.session;
+				$http.post('/post/pray',{userId:userId,postId:postId}).success(function (data, status, headers, config){
+	
+					var prayModal = angular.element(document.querySelector('#prayModal'));
+					prayModal.modal('show');
+				})
+				.error(function (){
+					alert('AJAX error in post like');
+				})
+
+			}
+
+			if ($cookies.temporalSession){
+
+				var userId = $cookies.temporalSession;
+				$http.post('/post/pray',{userId:userId,postId:postId}).success(function (data, status, headers, config){
+	
+					var prayModal = angular.element(document.querySelector('#prayModal'));
+					prayModal.modal('show');
+
+				})
+				.error(function (){
+					alert('AJAX error in post like');
+				})
+
+			}
+
+		}
 
 		$scope.post = function (){
 
@@ -90,8 +165,8 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies']);
 						$scope.postText = '';
 						$scope.myFile = undefined;
 						
-						var d = document.getElementById("myModal");
-						d.className = d.className + "bounceOut";
+						var postModal = angular.element(document.querySelector('#postModal'));
+						postModal.modal('hide');
 
 					
 
