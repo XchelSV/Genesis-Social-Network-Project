@@ -3,8 +3,9 @@ module.exports = (function (app,ObjectId){
 	app.route('/')
 
 		.get(function (request,response){
-
-			response.render('index')
+		
+					response.render('index')
+			
 
 		})
 

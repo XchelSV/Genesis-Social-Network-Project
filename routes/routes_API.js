@@ -35,6 +35,10 @@ var  Post = require('../Models/post_model');
 
 							if(pass){
 
+									response.clearCookie('temporalSession');	
+								
+								
+
 								var date = new Date(user.birthday);
 
 								request.session._id = uuid.v4();
@@ -42,7 +46,7 @@ var  Post = require('../Models/post_model');
 									console.log('Token de Session: '+value);
 								});
 								RedisClient.expire(request.session._id,3600);
-								response.cookie('session',encodeURIComponent(request.session._id));
+								response.cookie('session',encodeURIComponent(user._id));
 
 								response.cookie('id', encodeURIComponent(user._id));
 								response.cookie('name',encodeURIComponent(user.name));
@@ -207,8 +211,8 @@ var  Post = require('../Models/post_model');
 				user_id:request.body.id,
 				userName:request.body.name,
 				body:request.body.body,
-				like:0,
-				pray4You:0,
+				like:[],
+				pray4You:[],
 				date:request.body.date,
 				img:request.body.img,
 				audio:request.body.audio,
@@ -247,6 +251,45 @@ var  Post = require('../Models/post_model');
 
 
 			})
+
+		})
+
+
+	app.route('/post/like')
+
+			.post(function (request,response){
+
+				var id = request.body.userId;
+				var postId = request.body.postId;
+
+				Post.update({_id:postId},{$push: {'like':id}},{upsert:true},function(err){
+				        
+				        if(err){
+				                console.log(err);
+				        }else{
+				                console.log("Successfully like Added from user: "+id);
+				                response.sendStatus(200);
+				        }
+				})
+
+		})
+
+	app.route('/post/pray')
+
+			.post(function (request,response){
+
+				var id = request.body.userId;
+				var postId = request.body.postId;
+
+				Post.update({_id:postId},{$push: {'pray4You':id}},{upsert:true},function(err){
+				        
+				        if(err){
+				                console.log(err);
+				        }else{
+				                console.log("Successfully pray4You Added from user: "+id);
+				                response.sendStatus(200);
+				        }
+				})
 
 		})
 

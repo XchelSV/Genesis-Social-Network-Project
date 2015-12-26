@@ -23,6 +23,7 @@ var  Post = require('../Models/post_model');
 								
 								var UIDSession = uuid.v4();
 								request.session._id = UIDSession;
+								response.cookie('session',encodeURIComponent(request.session._id));
 								RedisClient.set(UIDSession , user._id, function (err, value){
 									console.log('Token de Session: '+value);
 								});
