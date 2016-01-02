@@ -11,7 +11,7 @@
   margin-top: 5%;
  }
 
-.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+.btn-primary, .btn-primary:active, .btn-primary:visited {
     background-color: #00BCC6 !important;
     border-color: #00BCC6 !important;
 }
@@ -19,6 +19,11 @@
 .active{
   background-color: #00BCC6 !important;
   border-color: #00BCC6 !important;
+}
+
+.active-like-pray{
+  background-color: #424242 !important;
+  border-color: #424242 !important;
 }
 
  .footer
