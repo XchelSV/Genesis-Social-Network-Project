@@ -254,6 +254,18 @@ var  Post = require('../Models/post_model');
 
 		})
 
+	app.route('/post/:_id')
+
+			.get(function (request,response){
+
+					var id = request.params._id;
+					Post.findById(id, function (err,doc){
+						response.send(doc);
+
+					})
+
+			})
+
 
 	app.route('/post/like')
 
@@ -261,15 +273,33 @@ var  Post = require('../Models/post_model');
 
 				var id = request.body.userId;
 				var postId = request.body.postId;
+				var flag = true;
 
-				Post.update({_id:postId},{$push: {'like':id}},{upsert:true},function(err){
+				Post.findById(postId,function (err,doc){
+					for (var i = 0; i < doc.like.length; i++) {
+						if (id == doc.like[i]){
+
+							flag = false;
+							break;
+
+						}
+					};
+
+					if (flag){
+
+						Post.update({_id:postId},{$push: {'like':id}},{upsert:true},function(err){
 				        
-				        if(err){
-				                console.log(err);
-				        }else{
-				                console.log("Successfully like Added from user: "+id);
-				                response.sendStatus(200);
-				        }
+							        if(err){
+							                console.log(err);
+							        }else{
+							                console.log("Successfully like Added from user: "+id);
+							                response.sendStatus(200);
+							        }
+						})
+					}
+					else{
+						response.sendStatus(404);
+					}
 				})
 
 		})
@@ -280,16 +310,35 @@ var  Post = require('../Models/post_model');
 
 				var id = request.body.userId;
 				var postId = request.body.postId;
+				var flag = true;
 
-				Post.update({_id:postId},{$push: {'pray4You':id}},{upsert:true},function(err){
+				Post.findById(postId,function (err,doc){
+					for (var i = 0; i < doc.pray4You.length; i++) {
+						if (id == doc.pray4You[i]){
+
+							flag = false;
+							break;
+
+						}
+					};
+
+					if (flag){
+
+						Post.update({_id:postId},{$push: {'pray4You':id}},{upsert:true},function(err){
 				        
-				        if(err){
-				                console.log(err);
-				        }else{
-				                console.log("Successfully pray4You Added from user: "+id);
-				                response.sendStatus(200);
-				        }
+					        if(err){
+					                console.log(err);
+					        }else{
+					                console.log("Successfully pray4You Added from user: "+id);
+					                response.sendStatus(200);
+					        }
+						})
+					}
+					else{
+						response.sendStatus(404);
+					}
 				})
+
 
 		})
 
