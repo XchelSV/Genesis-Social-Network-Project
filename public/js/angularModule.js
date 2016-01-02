@@ -1,4 +1,6 @@
 var app = angular.module('Genesis',['ngRoute', 'ngCookies','angular-uuid']);
+
+	
 	
 	app.directive('fileModel', ['$parse', function ($parse) {
 	   	 return {
@@ -81,6 +83,22 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies','angular-uuid']);
 			alert('AJAX posts erros');
 		})
 
+		$scope.showLikeTooltip = function (button_id){
+
+			var tooltip = angular.element(document.querySelector('#like'+button_id));
+		    tooltip.tooltip('show');
+			
+		}
+
+		$scope.showPrayTooltip = function (button_id){
+
+			var tooltip = angular.element(document.querySelector('#pray'+button_id));
+		    tooltip.tooltip('show');
+			
+		}
+
+		    
+
 		$scope.like = function (postId){
 
 			
@@ -91,6 +109,9 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies','angular-uuid']);
 	
 					var likeModal = angular.element(document.querySelector('#likeModal'));
 					likeModal.modal('show');
+
+					var likeButton = angular.element(document.querySelector('#like'+postId));
+					likeButton.addClass('active-like-pray');
 				})
 				.error(function (){
 					alert('AJAX error in post like');
@@ -105,6 +126,9 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies','angular-uuid']);
 	
 					var likeModal = angular.element(document.querySelector('#likeModal'));
 					likeModal.modal('show');
+
+					var likeButton = angular.element(document.querySelector('#like'+postId));
+					likeButton.addClass('active-like-pray');
 
 				})
 				.error(function (){
@@ -125,6 +149,9 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies','angular-uuid']);
 	
 					var prayModal = angular.element(document.querySelector('#prayModal'));
 					prayModal.modal('show');
+
+					var prayButton = angular.element(document.querySelector('#pray'+postId));
+					prayButton.addClass('active-like-pray');
 				})
 				.error(function (){
 					alert('AJAX error in post like');
@@ -139,6 +166,9 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies','angular-uuid']);
 	
 					var prayModal = angular.element(document.querySelector('#prayModal'));
 					prayModal.modal('show');
+
+					var prayButton = angular.element(document.querySelector('#pray'+postId));
+					prayButton.addClass('active-like-pray');
 
 				})
 				.error(function (){

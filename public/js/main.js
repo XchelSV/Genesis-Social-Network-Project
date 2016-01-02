@@ -10,7 +10,7 @@ $(document).ready(function(){
 			$('.cd-panel').removeClass('is-visible');
 			event.preventDefault();
 		}
-	});
+	});	
 
-	$('.jumbotron').addClass('animated fadeIn');
+
 });

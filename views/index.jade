@@ -17,10 +17,10 @@ html(lang='en',ng-app='Genesis')
 
     script(type='text/javascript', src = 'js/jquery-2.1.1.js')
     script(type='text/javascript', src = 'js/angular.min.js')
+    script(type='text/javascript' , src = 'js/bootstrap.min.js')
     script(type='text/javascript', src = 'js/angularModule.js')
     script(type='text/javascript', src = 'js/socketModule.js')
     script(type='text/javascript', src = 'js/main.js')
-    script(type='text/javascript' , src = 'js/bootstrap.min.js')
     script(type='text/javascript' , src = 'js/angular-uuid.js')
       
     // Resource style
@@ -94,11 +94,11 @@ html(lang='en',ng-app='Genesis')
                       {{post.body}}
 
                   .row(style='margin-top:10%')
-                    .col-md-1
-                      button.btn.btn-sm.btn-danger(id='like{{post._id}}', ng-click='like(post._id)')
+                    .col-md-1()
+                      button.btn.btn-sm.btn-danger(id='like{{post._id}}', ng-click='like(post._id)', data-toggle="tooltip", data-placement="top", title="A {{post.like.length}} personas les gusta esto", type='button',ng-mouseover='showLikeTooltip(post._id)')
                         span.glyphicon.glyphicon-heart
                     .col-md-1.col-md-offset-1
-                      button.btn.btn-sm.btn-primary(id='pray{{post._id}}', ng-click='pray4You(post._id)', style='background: url("img/religion20.png")center no-repeat;padding-left: 15px;width:35px;height:30px;')
+                      button.btn.btn-sm.btn-primary(id='pray{{post._id}}', ng-click='pray4You(post._id)', style='background: url("img/religion20.png")center no-repeat;padding-left: 15px;width:35px;height:30px;', data-toggle="tooltip", data-placement="top" ,title="{{post.pray4You.length}} personas estan orando por esto", type='button',ng-mouseover='showPrayTooltip(post._id)')
                         
 
 
@@ -222,7 +222,7 @@ html(lang='en',ng-app='Genesis')
                 img(src='img/heart256.png').img-responsive
             .row
               .col-md-10.col-md-offset-1
-                h2(style='font-size:140%',align='center') ¡Es un gusto saber que te agrada nuestro trabajo!
+                h2(style='font-size:140%;margin-top:6%;',align='center') ¡Es un gusto saber que te agrada nuestro trabajo!
         
 
 
@@ -242,7 +242,7 @@ html(lang='en',ng-app='Genesis')
                 img(src='img/send4.png').img-responsive
             .row
               .col-md-10.col-md-offset-1
-                h2(style='font-size:140%;margin-top:4%;',align='center') ¡Tus Oraciones son muy importantes para continuar en nuestra obra!
+                h2(style='font-size:140%;margin-top:8%;',align='center') ¡Tus Oraciones son muy importantes para continuar en nuestra obra!
           //
 
 
