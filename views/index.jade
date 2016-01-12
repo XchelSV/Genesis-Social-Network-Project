@@ -22,6 +22,7 @@ html(lang='en',ng-app='Genesis')
     script(type='text/javascript', src = 'js/socketModule.js')
     script(type='text/javascript', src = 'js/main.js')
     script(type='text/javascript' , src = 'js/angular-uuid.js')
+    script(type='text/javascript' , src = 'js/angular-local-storage.min.js')
       
     // Resource style
     script(src='js/modernizr.js')
@@ -54,7 +55,7 @@ html(lang='en',ng-app='Genesis')
               a(href='/login',ng-hide = 'session()')
                 span Iniciar Sesión
          
-              a(href='/logout',ng-show = 'session()')
+              a(href='/logout',ng-show = 'session()',ng-click='clearStorage()')
                 span Cerrar Sesión
 
     .container-fluid
@@ -89,16 +90,16 @@ html(lang='en',ng-app='Genesis')
                   .row(style='margin-top:5%',ng-if='post.img')
                     .col-md-14
                       img(src='img/postPhotos/{{post._id}}.jpg').img-responsive
-                  .row(style='margin-top:5%')
-                    .col-md-10.col-md-offset-1
+                  .row(style='margin-top:5%',align='center')
+                    .col-md-10.col-md-offset-1(style="white-space: pre-line;")
                       {{post.body}}
 
-                  .row(style='margin-top:10%')
+                  .row(style='margin-top:8%')
                     .col-md-1()
-                      button.btn.btn-sm.btn-danger(id='like{{post._id}}', ng-click='like(post._id)', data-toggle="tooltip", data-placement="top", title="A {{post.like.length}} personas les gusta esto", type='button',ng-mouseover='showLikeTooltip(post._id)')
+                      button.btn.btn-sm.btn-danger(id='like{{post._id}}', ng-click='like(post._id)', data-toggle="tooltip", data-placement="top", title="A {{post.like.length}} personas les gusta esto", type='button',ng-mouseover='showLikeTooltip(post._id)',ng-class = "{'active-like-pray': getLikeButtonStatus(post._id) == true}")
                         span.glyphicon.glyphicon-heart
                     .col-md-1.col-md-offset-1
-                      button.btn.btn-sm.btn-primary(id='pray{{post._id}}', ng-click='pray4You(post._id)', style='background: url("img/religion20.png")center no-repeat;padding-left: 15px;width:35px;height:30px;', data-toggle="tooltip", data-placement="top" ,title="{{post.pray4You.length}} personas estan orando por esto", type='button',ng-mouseover='showPrayTooltip(post._id)')
+                      button.btn.btn-sm.btn-primary(id='pray{{post._id}}', ng-click='pray4You(post._id)', style='background: url("img/religion20.png")center no-repeat;padding-left: 15px;width:35px;height:30px;', data-toggle="tooltip", data-placement="top" ,title="{{post.pray4You.length}} personas estan orando por esto", type='button',ng-mouseover='showPrayTooltip(post._id)',ng-class = "{'active-like-pray': getPrayButtonStatus(post._id) == true}")
                         
 
 
@@ -149,7 +150,7 @@ html(lang='en',ng-app='Genesis')
                         | Biografía:
 
                      .row.margin-top
-                      .col-md-10.col-md-offset-1(align='justify')
+                      .col-md-10.col-md-offset-1()
                         {{biography}}
                         
                      .row.margin-top
@@ -247,4 +248,6 @@ html(lang='en',ng-app='Genesis')
 
 
   script(src='/socket.io/socket.io.js')
+
+    
   
