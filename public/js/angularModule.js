@@ -1,6 +1,11 @@
-var app = angular.module('Genesis',['ngRoute', 'ngCookies','angular-uuid']);
+var app = angular.module('Genesis',['ngRoute', 'ngCookies','angular-uuid','LocalStorageModule']);
 
-	
+	app.config(function (localStorageServiceProvider) {
+	  localStorageServiceProvider
+	    .setPrefix('Genesis')
+	    .setStorageType('localStorage')
+	    .setNotify(true, true)
+	});
 	
 	app.directive('fileModel', ['$parse', function ($parse) {
 	   	 return {
@@ -46,7 +51,7 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies','angular-uuid']);
 	    }
 	}]);
 	
-	app.controller('indexController',function  ($scope, $http, $cookies, fileUpload, uuid) {
+	app.controller('indexController',function  ($scope, $http, $cookies, fileUpload, uuid, localStorageService) {
 		
 		$scope.session = function(){
 			if($cookies.session != undefined){
@@ -56,6 +61,7 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies','angular-uuid']);
 				return false;
 			}
 		}
+
 
 		$scope.id = decodeURIComponent($cookies.id);
 		$scope.name = decodeURIComponent($cookies.name);
@@ -78,10 +84,41 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies','angular-uuid']);
 			
 			$scope.posts = data;
 
+			for (var i = 0; i < data.length; i++) {
+			 	for (var j = 0; j < data[i].like.length; j++) {
+			 		if ($cookies.session) {
+			 			if($cookies.session == data[i].like[j]){
+			 				localStorageService.set('like'+data[i]._id,true);
+			 			}
+			 		}
+			 		else{
+			 			if($cookies.temporalSession == data[i].like[j]){
+			 				localStorageService.set('like'+data[i]._id,true);
+			 			}
+			 		}
+			 	};
+
+			 	for (var k = 0; k < data[i].pray4You.length; k++) {
+			 		if ($cookies.session) {
+			 			
+			 			if($cookies.session == data[i].pray4You[k]){
+			 				localStorageService.set('pray'+data[i]._id,true);
+			 			}
+			 		}
+			 		else{
+			 			
+			 			if($cookies.temporalSession == data[i].pray4You[k]){
+			 				localStorageService.set('pray'+data[i]._id,true);
+			 			}
+			 		}
+			 	};
+			};
+
 		})
 		.error(function (){
 			alert('AJAX posts erros');
 		})
+
 
 		$scope.showLikeTooltip = function (button_id){
 
@@ -97,7 +134,21 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies','angular-uuid']);
 			
 		}
 
-		    
+		$scope.clearStorage = function (){
+			localStorageService.clearAll();
+		}
+
+		$scope.getLikeButtonStatus = function (postId){
+
+			return localStorageService.get('like'+postId);
+
+		}
+
+		$scope.getPrayButtonStatus = function (postId){
+
+			return localStorageService.get('pray'+postId);
+
+		}
 
 		$scope.like = function (postId){
 
@@ -106,15 +157,24 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies','angular-uuid']);
 
 				var userId = $cookies.session;
 				$http.post('/post/like',{userId:userId,postId:postId}).success(function (data, status, headers, config){
-	
-					var likeModal = angular.element(document.querySelector('#likeModal'));
-					likeModal.modal('show');
+					
+					if (status == 200){
+						var likeModal = angular.element(document.querySelector('#likeModal'));
+						likeModal.modal('show');
 
-					var likeButton = angular.element(document.querySelector('#like'+postId));
-					likeButton.addClass('active-like-pray');
+						var likeButton = angular.element(document.querySelector('#like'+postId));
+						
+						localStorageService.set('like'+postId,true);
+					}
+
+					if (status == 202){
+						localStorageService.set('like'+postId,false);
+					}
+					
 				})
 				.error(function (){
 					alert('AJAX error in post like');
+					
 				})
 
 			}
@@ -123,16 +183,22 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies','angular-uuid']);
 
 				var userId = $cookies.temporalSession;
 				$http.post('/post/like',{userId:userId,postId:postId}).success(function (data, status, headers, config){
-	
-					var likeModal = angular.element(document.querySelector('#likeModal'));
-					likeModal.modal('show');
+					
+					if (status == 200){
+						var likeModal = angular.element(document.querySelector('#likeModal'));
+						likeModal.modal('show');
 
-					var likeButton = angular.element(document.querySelector('#like'+postId));
-					likeButton.addClass('active-like-pray');
+						var likeButton = angular.element(document.querySelector('#like'+postId));
+						localStorageService.set('like'+postId,true);
+					}
+					if (status == 202){
+						localStorageService.set('like'+postId,false);
+					}
 
 				})
 				.error(function (){
 					alert('AJAX error in post like');
+					
 				})
 
 			}
@@ -146,12 +212,18 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies','angular-uuid']);
 
 				var userId = $cookies.session;
 				$http.post('/post/pray',{userId:userId,postId:postId}).success(function (data, status, headers, config){
-	
-					var prayModal = angular.element(document.querySelector('#prayModal'));
-					prayModal.modal('show');
+					
+					if (status == 200){
+						var prayModal = angular.element(document.querySelector('#prayModal'));
+						prayModal.modal('show');
 
-					var prayButton = angular.element(document.querySelector('#pray'+postId));
-					prayButton.addClass('active-like-pray');
+						var prayButton = angular.element(document.querySelector('#pray'+postId));
+						localStorageService.set('pray'+postId,true);
+					}
+					if (status == 202){
+						localStorageService.set('pray'+postId,false);	
+					}
+
 				})
 				.error(function (){
 					alert('AJAX error in post like');
@@ -163,12 +235,17 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies','angular-uuid']);
 
 				var userId = $cookies.temporalSession;
 				$http.post('/post/pray',{userId:userId,postId:postId}).success(function (data, status, headers, config){
-	
-					var prayModal = angular.element(document.querySelector('#prayModal'));
-					prayModal.modal('show');
+					
+					if (status == 200){
+						var prayModal = angular.element(document.querySelector('#prayModal'));
+						prayModal.modal('show');
 
-					var prayButton = angular.element(document.querySelector('#pray'+postId));
-					prayButton.addClass('active-like-pray');
+						var prayButton = angular.element(document.querySelector('#pray'+postId));
+						localStorageService.set('pray'+postId,true);
+					}
+					if (status == 202){
+						localStorageService.set('pray'+postId,false);		
+					}
 
 				})
 				.error(function (){
