@@ -298,7 +298,13 @@ var  Post = require('../Models/post_model');
 						})
 					}
 					else{
-						response.sendStatus(404);
+						doc.like.pull(id);
+						doc.save(function (err){
+							if (err) {throw err};
+							console.log('Like from user '+id+' was removed')
+							response.sendStatus(202);
+						})
+						
 					}
 				})
 
@@ -335,7 +341,13 @@ var  Post = require('../Models/post_model');
 						})
 					}
 					else{
-						response.sendStatus(404);
+						doc.pray4You.pull(id);
+						doc.save(function (err){
+							if (err) {throw err};
+							console.log('Pray4You from user '+id+' was removed')
+							response.sendStatus(202);
+						})
+						
 					}
 				})
 

@@ -23,6 +23,7 @@ var  Post = require('../Models/post_model');
 								
 								var UIDSession = uuid.v4();
 								request.session._id = UIDSession;
+								
 								response.cookie('session',encodeURIComponent(request.session._id));
 								RedisClient.set(UIDSession , user._id, function (err, value){
 									console.log('Token de Session: '+value);
@@ -141,6 +142,73 @@ var  Post = require('../Models/post_model');
 		})
 
 
+	app.route('/api/post/:token')
+
+		.post(function (request,response){
+
+			var token = request.params.token;
+
+			RedisClient.exists(token, function (err, reply){
+
+				if(reply===1){
+
+					var userId = RedisClient.get(token).toString();
+
+					var NewPost = new Post({
+
+						user_id:userId,
+						userName:request.session.name,
+						body:request.body.body,
+						like:[],
+						pray4You:[],
+						date:request.body.date,
+						img:request.body.img,
+						audio:request.body.audio,
+						video:request.body.video
+
+					});	
+
+					NewPost.save(function (err,save){
+
+						if (err) throw err;
+
+							var flag =  request.body.img;
+							console.log('Flag is '+flag);
+
+							if(request.files.file != undefined){
+							   
+							   console.log('Post Id: '+save._id);
+							   var fs = require('fs')
+
+							   var path = request.files.file.path;
+							   var newPath =  './public/img/postPhotos/'+save._id+'.jpg';
+
+							   var is = fs.createReadStream(path);
+							   var os = fs.createWriteStream(newPath);
+
+							   is.pipe(os)
+
+							   is.on('end', function() {
+								      //eliminamos el archivo temporal
+								   fs.unlinkSync(path);
+								})
+							}
+
+							console.log('Succesfully Added Post in User '+request.body.id+' by API app');
+							response.send(save);
+
+
+					})
+					
+				} 
+				else {
+					response.send(404);
+				}
+				
+			});
+
+			
+		})
 
 
 	
