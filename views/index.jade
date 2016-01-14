@@ -87,7 +87,7 @@ html(lang='en',ng-app='Genesis')
                     .col-md-9(style='margin-top:-8%')
                     
                         {{post.userName}}
-                  .row(style='margin-top:5%',ng-if='post.img')
+                  .row(style='margin-top:5%',ng-if='post.img',align='center')
                     .col-md-14
                       img(src='img/postPhotos/{{post._id}}.jpg').img-responsive
                   .row(style='margin-top:5%',align='center')
@@ -196,12 +196,18 @@ html(lang='en',ng-app='Genesis')
                 .col.md-8(style='margin-top:2%; margin-left:18%')
                   h4#myModalLabel.modal-title {{name}}              
             .modal-body
-              textarea.form-control(rows='6', placeholder='¿Tienes una nueva noticia que contar?',ng-model='postText')
+              .row
+                .col-md-12
+                  textarea.form-control(rows='6', placeholder='¿Tienes una nueva noticia que contar?',ng-model='postText')
+              .row
+                .col-md-8.col-md-offset-2
+                  a(href='#',style = 'margin-top : 3%',ng-if='myFile').thumbnail
+                    img(src='', alt='Image').img-rounded#blah
 
             .modal-footer
               .fileUpload.btn.btn-primary.pull-left(style='margin-top:0%')
                 span.glyphicon.glyphicon-picture
-                input.upload(type='file',file-model='myFile')
+                input.upload(type='file',file-model='myFile')#imgInp
                 
               button.btn.btn-default(type='button', data-dismiss='modal') Cancelar
               button.btn.btn-primary(type='button',ng-click='post()') Publicar
