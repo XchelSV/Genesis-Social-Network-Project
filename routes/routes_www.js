@@ -40,4 +40,16 @@ module.exports = (function (app,ObjectId){
 				
 			
 		})
+	app.route('/addDevotional')
+
+		.get(function (request, response){
+			if (request.session._id){
+				response.render('addDevotional')
+			}
+			else{
+				request.session.destroy(function (err){
+				response.redirect('/');
+				})
+			}
+		})
 });
