@@ -356,6 +356,15 @@ var  Devotional = require('../Models/devotional_model');
 		})
 	app.route('/devotional')
 
+		.get(function (request,response){
+
+			Devotional.find('','',function (err,docs){
+
+				response.send(docs);
+			})
+
+		})
+
 		.post(function (request,response){
 
 			var date = new Date();
