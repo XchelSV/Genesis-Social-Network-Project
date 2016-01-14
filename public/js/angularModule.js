@@ -256,12 +256,17 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies','angular-uuid','Local
 
 		}
 
+
 		$scope.post = function (){
 
-			if($scope.postText == '' && $scope.myFile == undefined){
+			if($scope.postText == undefined && $scope.myFile == undefined){
 
 			}
 			else{
+
+				if($scope.postText == undefined){
+					$scope.postText = '';
+				}
 
 				if ($scope.myFile != undefined){
 
