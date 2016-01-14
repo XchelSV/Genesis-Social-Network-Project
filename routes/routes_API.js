@@ -4,6 +4,7 @@ var bcrypt = require('bcrypt')
 		//Models Requires
 var  User = require('../Models/user_model');
 var  Post = require('../Models/post_model');
+var  Devotional = require('../Models/devotional_model');
 
 
 	app.route('/validateUser')
@@ -198,7 +199,7 @@ var  Post = require('../Models/post_model');
 
 				if (err) throw err;
 				
-				console.log('Existing Posts: '+docs+' Data Length: '+docs.length);
+				
 				response.send(docs);
 
 			})
@@ -351,6 +352,105 @@ var  Post = require('../Models/post_model');
 					}
 				})
 
+
+		})
+	app.route('/devotional')
+
+		.post(function (request,response){
+
+			var date = new Date();
+			var img = false;
+			var video = false;
+			var audio = false;
+			console.log(request.files.img)
+
+			if(request.files.img.size != 0){
+					   
+				img = true;
+			}
+
+			if(request.files.video.size != 0){
+				
+				video = true;	   
+			}
+
+			if(request.files.audio.size != 0){
+					   
+				audio = true;
+			}
+
+			var newDevotional = new Devotional({
+
+				title:request.body.title,
+				body:request.body.body,
+				date:date,
+				showDate:request.body.showDate,
+				img:img,
+				audio:audio,
+				video:video
+
+			})
+
+			newDevotional.save(function (err,saved){
+
+				if (err) throw err;
+
+				if(img){
+				   var fs = require('fs')
+
+				   var path = request.files.img.path;
+				   var newPath =  './public/img/devotionalPhotos/'+saved._id+'.jpg';
+
+				   var is = fs.createReadStream(path);
+				   var os = fs.createWriteStream(newPath);
+
+				   is.pipe(os)
+
+				   is.on('end', function() {
+					      //eliminamos el archivo temporal
+					   fs.unlink(path);
+					})
+				}
+
+				if(audio){
+				   var fs = require('fs')
+
+				   var path = request.files.audio.path;
+				   var newPath =  './public/audio/devotionalAudios/'+saved._id+'.mp3';
+
+				   var is = fs.createReadStream(path);
+				   var os = fs.createWriteStream(newPath);
+
+				   is.pipe(os)
+
+				   is.on('end', function() {
+					      //eliminamos el archivo temporal
+					   fs.unlink(path);
+					})
+				}
+
+
+				if(video){
+				   var fs = require('fs')
+
+				   var path = request.files.video.path;
+				   var newPath =  './public/video/devotionalVideos/'+saved._id+'.mp4';
+
+				   var is = fs.createReadStream(path);
+				   var os = fs.createWriteStream(newPath);
+
+				   is.pipe(os)
+
+				   is.on('end', function() {
+					      //eliminamos el archivo temporal
+					   fs.unlink(path);
+					})
+				}
+
+				console.log('Devotional saved ID: '+saved._id);
+				response.redirect('/');
+
+			})
 
 		})
 
