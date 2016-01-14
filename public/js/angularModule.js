@@ -320,6 +320,37 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies','angular-uuid','Local
 
 	});
 
+	app.controller('showDevotionalsController', function ($scope,$http,$cookies){
+
+		$scope.session = function(){
+			if($cookies.session != undefined){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		$scope.id = decodeURIComponent($cookies.id);
+		$scope.name = decodeURIComponent($cookies.name);
+		$scope.day = decodeURIComponent($cookies.day);
+		$scope.month = decodeURIComponent($cookies.month);
+		$scope.servicePlace = decodeURIComponent($cookies.servicePlace);
+		$scope.biography = decodeURIComponent($cookies.biography);
+
+		$http.get('/devotional').
+
+			success(function (data, status, headers, config) {
+				 $scope.devotionals = data;
+				 
+		 	}).
+			error(function (data, status, headers, config) {
+				      // log error
+			});
+
+
+
+	});
+
 	app.controller('showUserController',function  ($scope, $http, $cookies) {
 		
 		$scope.session = function(){
