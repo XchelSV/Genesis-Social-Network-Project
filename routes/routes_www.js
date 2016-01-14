@@ -40,6 +40,17 @@ module.exports = (function (app,ObjectId){
 				
 			
 		})
+
+	app.route('/showDevotionals')
+
+		.get(function (request, response){
+			
+			
+				response.render('showDevotionals')
+				
+			
+		})
+
 	app.route('/addDevotional')
 
 		.get(function (request, response){
