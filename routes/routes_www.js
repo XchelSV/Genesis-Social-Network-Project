@@ -1,5 +1,7 @@
 module.exports = (function (app,ObjectId){
 	
+	var  Devotional = require('../Models/devotional_model');
+	
 	app.route('/')
 
 		.get(function (request,response){
@@ -62,5 +64,25 @@ module.exports = (function (app,ObjectId){
 				response.redirect('/');
 				})
 			}
+		})
+
+	app.route('/devotionals/:_id')
+
+		.get(function (request,response){
+
+
+			if (request.session._id){
+
+				Devotional.findById( request.params._id ,function (err,devotional){
+					response.render('devotionals',{id:devotional._id, title:devotional.title, body:devotional.body, date:devotional.showDate, img:devotional.img, audio:devotional.audio, video:devotional.video});		
+				})
+				
+			}
+			else{
+				request.session.destroy(function (err){
+				response.redirect('/');
+				})
+			}
+
 		})
 });
