@@ -1,0 +1,172 @@
+doctype html
+html(lang='en',ng-app='Genesis')
+  head
+    meta(http-equiv="Content-type" content="text/html" ,charset="UTF-8")
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+
+    link(href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700|Droid+Serif', rel='stylesheet', type='text/css')
+    link(href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css')
+    link(rel='stylesheet', type='text/css', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css')
+    link(rel='stylesheet',type='text/css', href='/css/reset.css')
+    link(rel='stylesheet', type='text/css',href='/css/animate.css')
+    // CSS reset
+    link(rel='stylesheet', type='text/css',href='/css/style2.css')
+    link(rel='stylesheet', type='text/css',href='/css/styles.css') 
+    //link(rel='stylesheet', type='text/css',href='css/masonry_style.css') 
+
+    script(type='text/javascript', src = '/js/jquery-2.1.1.js')
+    script(type='text/javascript', src = '/js/angular.min.js')
+    script(type='text/javascript' , src = '/js/bootstrap.min.js')
+    script(type='text/javascript', src = '/js/angularModule.js')
+    script(type='text/javascript', src = '/js/socketModule.js')
+    script(type='text/javascript', src = '/js/main.js')
+    script(type='text/javascript' , src = '/js/angular-uuid.js')
+    script(type='text/javascript' , src = '/js/angular-local-storage.min.js')
+      
+    // Resource style
+    script(src='/js/modernizr.js')
+    // Modernizr
+
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.1/moment.min.js')
+    script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular-route.js')
+    script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular-cookies.js')
+
+    title Genesis Mesoamerica
+  body.animated.fadeIn(ng-controller='devotionalsController')
+
+    header
+      #cssmenu
+        ul
+          li
+            a(href='/')
+              span Inicio
+          li.active
+            a(href='/showDevotionals', ng-show = 'session()')
+              span Devocionales
+          li
+            a(href='/showUsers')
+              span Misioneros
+          li.last
+            a.cd-btn(href='#' ,ng-show = 'session()')
+              span Perfil
+          ul.navbar-right
+            li
+          
+              a(href='/login',ng-hide = 'session()')
+                span Iniciar Sesión
+         
+              a(href='/logout',ng-show = 'session()',ng-click='clearStorage()')
+                span Cerrar Sesión
+
+    .container-fluid
+      
+      main.cd-main-content
+        .jumbotron(style = 'margin-top : 1%')
+              .row(style='margin-top:3%; font-size:180%')
+                .col-md-10.col-md-offset-1
+                  h2 #{title}
+              .row(style='margin-top:4%; font-size:120%')
+                .col-md-12(style="white-space: pre-line;")
+                  h2 #{body}
+              .row(style='margin-top:3%;')
+                .col-md-4.col-md-offset-8
+                  h4#devDate
+                  
+              .row(style='margin-top:3%;')
+                .col-md-8.col-md-offset-2
+                  img(src='/img/devotionalPhotos/#{id}.jpg', alt='...',ng-if= "#{img}").img-responsive
+              .row(style='margin-top:3%;')
+                .col-md-12
+                   video(width='320', height='240', controls,ng-if = "#{video}")
+                    source(src='/video/devotionalVideos/#{id}.mp4', type='video/mp4')
+                    
+                    | Your browser does not support the video tag.
+              .row(style='margin-top:3%;')
+                .col-md-6.col-md-offset-3
+                  audio(controls,ng-if= "#{audio}")
+                    source(src='/audio/devotionalAudios/#{id}.mp3', type='audio/mpeg')
+                    |   Your browser does not support the audio tag.
+
+
+
+
+         //panel for real time chat
+      .cd-panel.from-right
+        header.cd-panel-header
+          h1(align='center') Perfil del Misionero
+          a.cd-panel-close(href='#0') Close
+        .cd-panel-container
+          .cd-panel-content
+
+            .row
+              .col-md-4.col-md-offset-1
+                a.thumbnail(href='#')
+                  img.img-responsive.img-rounded(src='/img/userPhotos/{{id}}.jpg', alt='img-responsive')
+
+              .col-md-7
+                .well.well-lg
+                  h3
+                    .row
+                      .col-md-3
+                        span.glyphicon.glyphicon-user(aria-hidden="true")
+                      .col-md-offset-1
+                        | {{name}}
+
+                    .row.margin-top
+                      .col-md-3
+                         span.glyphicon.glyphicon-gift(aria-hidden="true")
+                      .col-md-offset-1
+                        | Cumpleaños: {{day}}/{{month}}
+
+                     .row.margin-top
+                      .col-md-3
+                        span.glyphicon.glyphicon-pushpin(aria-hidden="true")
+                      .col-md-offset-1
+                        | Lugar de Servicio: {{servicePlace}}
+
+
+                     .row.margin-top
+                      .col-md-3
+                        span.glyphicon.glyphicon-tag(aria-hidden="true")
+                      .col-md-offset-1
+                        | Biografía:
+
+                     .row.margin-top
+                      .col-md-10.col-md-offset-1()
+                        {{biography}}
+                        
+                     .row.margin-top
+                        .col-md-10.col-md-offset-1
+                          a(href='#')
+                            | Editar Información
+
+
+            .row
+              .col-md-offset-1.col-md-11
+                   .list-group
+                      a.list-group-item.active(href='#',align='center')
+                        | Publicaciones Recientes 
+                      a.list-group-item(href='#') Dapibus ac facilisis in
+                      a.list-group-item(href='#') Morbi leo risus
+                      a.list-group-item(href='#') Porta ac consectetur ac
+                      a.list-group-item(href='#') Vestibulum at eros
+                              
+                  
+
+              
+            
+            .footer.col-md-10.col-md-offset-1
+              
+                
+            
+          // cd-panel-content
+        // cd-panel-container
+      // cd-panel
+
+      script(src='/socket.io/socket.io.js')
+      script.
+         var date = new Date("#{date}");
+         moment.locale("es");
+         
+         document.getElementById("devDate").innerHTML = moment(date).fromNow();
