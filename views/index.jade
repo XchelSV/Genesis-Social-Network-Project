@@ -28,8 +28,11 @@ html(lang='en',ng-app='Genesis')
     script(src='js/modernizr.js')
     // Modernizr
 
+    script(src='//momentjs.com/downloads/moment-with-locales.min.js')
+    script(src='//cdnjs.cloudflare.com/ajax/libs/angular-moment/0.10.3/angular-moment.js')
     script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular-route.js')
     script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular-cookies.js')
+
 
     title Genesis Mesoamerica
   body.animated.fadeIn(ng-controller='indexController')
@@ -81,12 +84,14 @@ html(lang='en',ng-app='Genesis')
               .well.animated.bounceInUp
                   
                   .row
-                      .col-md-3
+                    .col-md-1
                         img(src='img/userPhotos/{{post.user_id}}.jpg',height='35',width='35').img-circle
 
-                    .col-md-9(style='margin-top:-8%')
-                    
+                    .col-md-6(style='margin-top:3%')
                         {{post.userName}}
+                    .col-md-5(style='margin-top:3%')
+                      span(am-time-ago='post.date')
+
                   .row(style='margin-top:5%',ng-if='post.img',align='center')
                     .col-md-14
                       img(src='img/postPhotos/{{post._id}}.jpg').img-responsive
@@ -254,6 +259,7 @@ html(lang='en',ng-app='Genesis')
 
 
   script(src='/socket.io/socket.io.js')
-
+  script(type='text/javascript').
+            moment.locale("es");
     
   
