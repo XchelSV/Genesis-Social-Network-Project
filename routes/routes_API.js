@@ -358,7 +358,9 @@ var  Devotional = require('../Models/devotional_model');
 
 		.get(function (request,response){
 
-			Devotional.find('','',function (err,docs){
+			var newDate = new Date();
+
+			Devotional.find({showDate:{$lt: newDate}},function (err,docs){
 
 				response.send(docs);
 			})
