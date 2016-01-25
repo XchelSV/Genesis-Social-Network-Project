@@ -1,4 +1,4 @@
-var app = angular.module('Genesis',['ngRoute', 'ngCookies','angular-uuid','LocalStorageModule']);
+var app = angular.module('Genesis',['ngRoute', 'ngCookies','angular-uuid','LocalStorageModule','angularMoment']);
 
 	app.config(function (localStorageServiceProvider) {
 	  localStorageServiceProvider
@@ -346,6 +346,7 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies','angular-uuid','Local
 			error(function (data, status, headers, config) {
 				      // log error
 			});
+		
 
 	});
 
