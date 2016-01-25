@@ -23,6 +23,8 @@ html(lang='en',ng-app='Genesis')
     script(type='text/javascript', src = 'js/main.js')
     script(type='text/javascript' , src = 'js/angular-uuid.js')
     script(type='text/javascript' , src = 'js/angular-local-storage.min.js')
+    script(src='//momentjs.com/downloads/moment-with-locales.min.js')
+    script(src='//cdnjs.cloudflare.com/ajax/libs/angular-moment/0.10.3/angular-moment.js')
       
     // Resource style
     script(src='js/modernizr.js')
@@ -70,7 +72,9 @@ html(lang='en',ng-app='Genesis')
                     .caption
                       h2(style='font-size:130%') {{devotional.title}}
                       h3(style='margin-top:2%') {{devotional.body.slice(0,140)}} ...
-                      p(style='margin-top:10%')
+                      h4(style='margin-top:5%').pull-right
+                        span(am-time-ago='devotional.showDate') 
+                      p(style='margin-top:14%')
                         a(href='/devotionals/{{devotional._id}}') 
                           button.btn.btn-primary Ver Devocional
 
@@ -160,3 +164,6 @@ html(lang='en',ng-app='Genesis')
       // cd-panel
 
       script(src='/socket.io/socket.io.js')
+      script(type='text/javascript').
+            moment.locale("es");
+    

@@ -23,6 +23,8 @@ html(lang='en',ng-app='Genesis')
     script(type='text/javascript', src = 'js/main.js')
     script(type='text/javascript' , src = 'js/angular-uuid.js')
     script(type='text/javascript' , src = 'js/angular-local-storage.min.js')
+    script(src='//momentjs.com/downloads/moment-with-locales.min.js')
+    script(src='//cdnjs.cloudflare.com/ajax/libs/angular-moment/0.10.3/angular-moment.js')
       
     // Resource style
     script(src='js/modernizr.js')
@@ -71,13 +73,13 @@ html(lang='en',ng-app='Genesis')
                 .form-group
                   label.pull-left.control-label.col-md-3.col-md-offset-1 ¡Ponle un Título!
                   .col-md-5
-                    input(type='text',name='title',placeholder='¿Cuál será el Título para este Devocional?').form-control
+                    input(type='text',name='title',placeholder='¿Cuál será el Título para este Devocional?',required).form-control
                 .form-group
-                  textarea(name='body',placeholder='Es hora de escribir el Devocional, recuerda que esto será de gran ayuda para nuestros misioneros',rows='8',style='margin-top:2%').form-control
+                  textarea(name='body',placeholder='Es hora de escribir el Devocional, recuerda que esto será de gran ayuda para nuestros misioneros',rows='8',style='margin-top:2%',required).form-control
                 .form-group(style='margin-top:3%')
                   label().control-label.col-md-6.col-md-offset-1 Y, ¿Cuándo quieres que se muestre este devocional?
                   .col-md-3
-                    input(type='date',name='showDate',placeholder='¿Cuál será el Título para este Devocional?').form-control
+                    input(type='date',name='showDate',required).form-control
                 .form-group(style='margin-top:4%')
                   label.control-label.col-md-3.col-md-offset-2 ¿Llevará algo más?
                   .col-md-4

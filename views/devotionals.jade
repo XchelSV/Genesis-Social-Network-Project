@@ -28,9 +28,11 @@ html(lang='en',ng-app='Genesis')
     script(src='/js/modernizr.js')
     // Modernizr
 
-    script(src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.1/moment.min.js')
+    script(src='//momentjs.com/downloads/moment-with-locales.min.js')
+    script(src='//cdnjs.cloudflare.com/ajax/libs/angular-moment/0.10.3/angular-moment.js')
     script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular-route.js')
     script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular-cookies.js')
+    
 
     title Genesis Mesoamerica
   body.animated.fadeIn(ng-controller='devotionalsController')
@@ -74,7 +76,7 @@ html(lang='en',ng-app='Genesis')
                   h4#devDate
                   
               .row(style='margin-top:3%;')
-                .col-md-8.col-md-offset-2
+                .col-md-8.col-md-offset-2(align='center')
                   img(src='/img/devotionalPhotos/#{id}.jpg', alt='...',ng-if= "#{img}").img-responsive
               .row(style='margin-top:3%;')
                 .col-md-12
