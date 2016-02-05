@@ -360,7 +360,7 @@ var  Devotional = require('../Models/devotional_model');
 
 			var newDate = new Date();
 
-			Devotional.find({showDate:{$lt: newDate}},function (err,docs){
+			Devotional.find({showDate:{$lt: newDate}},'',{sort:{date:-1}},function (err,docs){
 
 				response.send(docs);
 			})

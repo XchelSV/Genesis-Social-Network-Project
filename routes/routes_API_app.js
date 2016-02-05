@@ -5,6 +5,7 @@ var path = require('path');
 		//Models Requires
 var  User = require('../Models/user_model');
 var  Post = require('../Models/post_model');
+var  Devotional = require('../Models/devotional_model');
 
 
 	app.route('/api/login')
@@ -152,21 +153,48 @@ var  Post = require('../Models/post_model');
 
 				if(reply===1){
 
-					var userId = RedisClient.get(token).toString();
+					var userId;
 
-					var NewPost = new Post({
+					RedisClient.get(token, function (err,value){
+						
+						userId = value;
 
-						user_id:userId,
-						userName:request.session.name,
-						body:request.body.body,
-						like:[],
-						pray4You:[],
-						date:request.body.date,
-						img:request.body.img,
-						audio:request.body.audio,
-						video:request.body.video
+						User.findById(userId, function (err,doc){
+						
+						var img = false;
+						var audio = false;
+						var video = false;
 
-					});	
+						if(request.files.img != undefined){
+							   
+							img = true;
+						}
+
+						if(request.files.video != undefined){
+							
+							video = true;	   
+						}
+
+						if(request.files.audio != undefined){
+								   
+							audio = true;
+						}
+
+						var NewPost = new Post({
+
+							user_id:userId,
+							userName:doc.name,
+							body:request.body.body,
+							like:[],
+							pray4You:[],
+							date:request.body.date,
+							img:img,
+							audio:audio,
+							video:video
+
+						});	
+
+
 
 					NewPost.save(function (err,save){
 
@@ -175,12 +203,12 @@ var  Post = require('../Models/post_model');
 							var flag =  request.body.img;
 							console.log('Flag is '+flag);
 
-							if(request.files.file != undefined){
+							if(request.files.img != undefined){
 							   
 							   console.log('Post Id: '+save._id);
 							   var fs = require('fs')
 
-							   var path = request.files.file.path;
+							   var path = request.files.img.path;
 							   var newPath =  './public/img/postPhotos/'+save._id+'.jpg';
 
 							   var is = fs.createReadStream(path);
@@ -195,10 +223,14 @@ var  Post = require('../Models/post_model');
 							}
 
 							console.log('Succesfully Added Post in User '+request.body.id+' by API app');
-							response.send(save);
+							response.send(200);
 
 
 					})
+
+					})
+
+				});
 					
 				} 
 				else {
@@ -210,7 +242,199 @@ var  Post = require('../Models/post_model');
 			
 		})
 
+	app.route('/api/devotional/:token')
 
+		.get(function (request,response){
+
+			var token = request.params.token;
+
+			RedisClient.exists(token, function (err, reply){
+
+				if(reply===1){
+
+					var newDate = new Date();
+
+					Devotional.find({showDate:{$lt: newDate}},'',{sort:{date:-1}},function (err,docs){
+
+						response.send(docs);
+					})
+
+				}else{
+					response.sendStatus(404);
+				}
+			})
+
+		})
+
+		.post(function (request,response){
+
+			var token = request.params.token;
+
+			RedisClient.exists(token, function (err, reply){
+
+				if(reply===1){
+
+					var date = new Date();
+					var img = false;
+					var video = false;
+					var audio = false;
+					
+
+					if(request.files.img != undefined){
+							   
+						img = true;
+					}
+
+					if(request.files.video != undefined){
+						
+						video = true;	   
+					}
+
+					if(request.files.audio != undefined){
+							   
+						audio = true;
+					}
+
+					var newDevotional = new Devotional({
+
+						title:request.body.title,
+						body:request.body.body,
+						date:date,
+						showDate:request.body.showDate,
+						img:img,
+						audio:audio,
+						video:video
+
+					})
+
+					newDevotional.save(function (err,saved){
+
+						if (err) throw err;
+
+						if(img){
+						   var fs = require('fs')
+
+						   var path = request.files.img.path;
+						   var newPath =  './public/img/devotionalPhotos/'+saved._id+'.jpg';
+
+						   var is = fs.createReadStream(path);
+						   var os = fs.createWriteStream(newPath);
+
+						   is.pipe(os)
+
+						   is.on('end', function() {
+							      //eliminamos el archivo temporal
+							   fs.unlink(path);
+							})
+						}
+
+						if(audio){
+						   var fs = require('fs')
+
+						   var path = request.files.audio.path;
+						   var newPath =  './public/audio/devotionalAudios/'+saved._id+'.mp3';
+
+						   var is = fs.createReadStream(path);
+						   var os = fs.createWriteStream(newPath);
+
+						   is.pipe(os)
+
+						   is.on('end', function() {
+							      //eliminamos el archivo temporal
+							   fs.unlink(path);
+							})
+						}
+
+
+						if(video){
+						   var fs = require('fs')
+
+						   var path = request.files.video.path;
+						   var newPath =  './public/video/devotionalVideos/'+saved._id+'.mp4';
+
+						   var is = fs.createReadStream(path);
+						   var os = fs.createWriteStream(newPath);
+
+						   is.pipe(os)
+
+						   is.on('end', function() {
+							      //eliminamos el archivo temporal
+							   fs.unlink(path);
+							})
+						}
+
+						console.log('Devotional saved by API App: '+saved._id);
+						response.sendStatus(200);
+
+					})
+
+
+				}else{
+					response.sendStatus(404);
+				}
+			})
+
+		})
 	
+	app.route('/api/devotional/img/:_id/:token')
+
+		.get(function (request,response){
+
+			var devotionalId = request.params._id;
+			var token = request.params.token;
+
+			RedisClient.exists(token, function (err, reply){
+
+				if(reply===1){
+
+			
+
+					response.sendFile(path.join(__dirname, '../public/img/devotionalPhotos/'+devotionalId+'.jpg'));
+				}else{
+					response.sendStatus(404);
+				}
+			})
+
+		})
+
+	app.route('/api/devotional/audio/:_id/:token')
+
+		.get(function (request,response){
+
+			var devotionalId = request.params._id;
+			var token = request.params.token;
+
+			RedisClient.exists(token, function (err, reply){
+
+				if(reply===1){
+			
+
+					response.sendFile(path.join(__dirname, '../public/audio/devotionalAudios/'+devotionalId+'.mp3'));
+
+				}else{
+					response.sendStatus(404);
+				}
+			})
+		})
+
+	app.route('/api/devotional/video/:_id/:token')
+
+		.get(function (request,response){
+
+			var devotionalId = request.params._id;
+			var token = request.params.token;
+
+			RedisClient.exists(token, function (err, reply){
+
+				if(reply===1){
+			
+
+					response.sendFile(path.join(__dirname, '../public/video/devotionalVideos/'+devotionalId+'.mp4'));
+
+				}else{
+					response.sendStatus(404);
+				}
+			})
+		})
 
 });
