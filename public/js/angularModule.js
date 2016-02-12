@@ -318,6 +318,16 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies','angular-uuid','Local
 		$scope.servicePlace = decodeURIComponent($cookies.servicePlace);
 		$scope.biography = decodeURIComponent($cookies.biography);
 
+		$http.get('/place').
+
+			success(function (data, status, headers, config) {
+				 $scope.places = data;
+				 
+		 	}).
+			error(function (data, status, headers, config) {
+				      // log error
+			});
+
 	});
 
 	app.controller('showDevotionalsController', function ($scope,$http,$cookies){
@@ -386,7 +396,7 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies','angular-uuid','Local
 		$scope.servicePlace = decodeURIComponent($cookies.servicePlace);
 		$scope.biography = decodeURIComponent($cookies.biography);
 
-		$http.get('/user').
+		/*$http.get('/user').
 
 			success(function (data, status, headers, config) {
 				 $scope.missionaries = data;
@@ -394,7 +404,18 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies','angular-uuid','Local
 		 	}).
 			error(function (data, status, headers, config) {
 				      // log error
+			});*/
+
+		$http.get('/place').
+
+			success(function (data, status, headers, config) {
+				 $scope.places = data;
+				 
+		 	}).
+			error(function (data, status, headers, config) {
+				      // log error
 			});
+
 
 	});
 
