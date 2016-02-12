@@ -80,7 +80,10 @@ html(lang='en',ng-app='Genesis')
                       input.form-control(type='date',name='birth',style = 'margin-top : 1%')
                     .form-group
                       label Lugar de Servicio:
-                      input.form-control(type='text',name='place', placeholder='Lugar de Servicio',required,style = 'margin-top : 1%')
+                      select.form-control(name='place',required,style = 'margin-top : 1%')
+                        option(value='')
+                        option(value='{{place.formatted_address}}',ng-repeat='place in places'){{place.formatted_address}}
+                      
                     .form-group
                       label Biografía:
                       textarea.form-control(rows='6',name='bio',style = 'margin-top : 1%')
