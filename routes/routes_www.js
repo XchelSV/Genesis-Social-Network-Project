@@ -66,6 +66,19 @@ module.exports = (function (app,ObjectId){
 			}
 		})
 
+	app.route('/addPlace')
+
+		.get(function (request, response){
+			if (request.session._id){
+				response.render('addPlace')
+			}
+			else{
+				request.session.destroy(function (err){
+				response.redirect('/');
+				})
+			}
+		})
+
 	app.route('/devotionals/:_id')
 
 		.get(function (request,response){
