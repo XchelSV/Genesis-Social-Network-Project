@@ -5,6 +5,7 @@ var bcrypt = require('bcrypt')
 var  User = require('../Models/user_model');
 var  Post = require('../Models/post_model');
 var  Devotional = require('../Models/devotional_model');
+var  Place = require('../Models/place_model');
 
 
 	app.route('/validateUser')
@@ -461,6 +462,34 @@ var  Devotional = require('../Models/devotional_model');
 				console.log('Devotional saved ID: '+saved._id);
 				response.redirect('/');
 
+			})
+
+		})
+
+	app.route('/place')
+
+		.post(function (request,response){
+
+			console.log(request.body.location);
+			var newPlace = new Place({
+				_id:request.body.place_id,
+				location:request.body.location,
+				formatted_address:request.body.formatted_address
+			})
+
+			newPlace.save(function (err,saved){
+
+					response.sendStatus(200);
+
+			})
+
+		})
+
+		.get(function (request,response){
+
+			Place.find('','',function (err,docs){
+
+				response.send(docs);
 			})
 
 		})
