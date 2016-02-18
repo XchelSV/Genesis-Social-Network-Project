@@ -1,6 +1,8 @@
 module.exports = (function (app,ObjectId){
 	
 	var  Devotional = require('../Models/devotional_model');
+	var  Place = require('../Models/place_model');
+	var  User = require('../Models/user_model');
 	
 	app.route('/')
 
@@ -96,6 +98,25 @@ module.exports = (function (app,ObjectId){
 				response.redirect('/');
 				})
 			}
+
+		})
+
+
+	app.route('/user/place/:_placeId')
+
+		.get(function (request,response){
+		
+			var placeId = request.params._placeId;
+
+			Place.findById(placeId, function (err,place){
+				if (err) throw err;
+
+				
+					response.render('userByPlace',{place: place.formatted_address})
+		
+
+
+			})
 
 		})
 });
