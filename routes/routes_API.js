@@ -108,6 +108,12 @@ var  Place = require('../Models/place_model');
 
 		.get(function (request, response){
 
+			var id = request.params.id;
+
+			User.findById(id, function (err,user){
+				if (err) throw err;
+				response.send(user);
+			})
 		})
 
 		.post(function (request, response){
@@ -490,6 +496,26 @@ var  Place = require('../Models/place_model');
 			Place.find('','',function (err,docs){
 
 				response.send(docs);
+			})
+
+		})
+
+	app.route('/users/place/:_placeId')
+
+		.get(function (request,response){
+
+			var placeId = request.params._placeId;
+
+			Place.findById(placeId, function (err,place){
+				if (err) throw err;
+
+				User.find({servicePlace: place.formatted_address},function (err, docs){
+					if (err) throw err;
+					console.log('Misioneros de '+place.formatted_address+' : '+docs)
+					response.send(docs);
+				})
+
+
 			})
 
 		})
