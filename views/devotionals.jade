@@ -125,23 +125,28 @@ html(lang='en',ng-app='Genesis')
                       .col-md-3
                         span.glyphicon.glyphicon-pushpin(aria-hidden="true")
                       .col-md-offset-1
-                        | Lugar de Servicio: {{servicePlace}}
-
-
-                     .row.margin-top
-                      .col-md-3
-                        span.glyphicon.glyphicon-tag(aria-hidden="true")
-                      .col-md-offset-1
-                        | Biografía:
-
-                     .row.margin-top
-                      .col-md-10.col-md-offset-1()
-                        {{biography}}
+                        | Lugar de Servicio: 
+                      .row.margin-top
+                        .col-md-offset-3
+                          {{servicePlace}}
                         
                      .row.margin-top
                         .col-md-10.col-md-offset-1
                           a(href='#')
                             | Editar Información
+
+            .row
+                              .col-md-11.col-md-offset-1
+                                .well.well-lg
+                                  .row
+                                      .col-md-3
+                                        span.glyphicon.glyphicon-tag(aria-hidden="true")
+                                      .col-md-offset-1
+                                        | Biografía:
+
+                                     .row.margin-top
+                                      .col-md-10.col-md-offset-1()
+                                        {{biography}}
 
 
             .row

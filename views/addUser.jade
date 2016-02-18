@@ -110,7 +110,7 @@ html(lang='en',ng-app='Genesis')
             .row
               .col-md-4.col-md-offset-1
                 a.thumbnail(href='#')
-                  img.img-responsive.img-rounded(src='img/userPhotos/{{id}}.jpg', alt='img-responsive')
+                  img.img-responsive.img-rounded(src='/img/userPhotos/{{id}}.jpg', alt='img-responsive')
 
               .col-md-7
                 .well.well-lg
@@ -131,24 +131,28 @@ html(lang='en',ng-app='Genesis')
                       .col-md-3
                         span.glyphicon.glyphicon-pushpin(aria-hidden="true")
                       .col-md-offset-1
-                        | Lugar de Servicio: {{servicePlace}}
-
-
-                     .row.margin-top
-                      .col-md-3
-                        span.glyphicon.glyphicon-tag(aria-hidden="true")
-                      .col-md-offset-1
-                        | Biografía:
-
-                     .row.margin-top
-                      .col-md-10.col-md-offset-1(align='justify')
-                        {{biography}}
+                        | Lugar de Servicio: 
+                      .row.margin-top
+                        .col-md-offset-3
+                          {{servicePlace}}
                         
                      .row.margin-top
                         .col-md-10.col-md-offset-1
                           a(href='#')
                             | Editar Información
 
+            .row
+                              .col-md-11.col-md-offset-1
+                                .well.well-lg
+                                  .row
+                                      .col-md-3
+                                        span.glyphicon.glyphicon-tag(aria-hidden="true")
+                                      .col-md-offset-1
+                                        | Biografía:
+
+                                     .row.margin-top
+                                      .col-md-10.col-md-offset-1()
+                                        {{biography}}
 
             .row
               .col-md-offset-1.col-md-11
