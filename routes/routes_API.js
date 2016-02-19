@@ -367,7 +367,7 @@ var  Place = require('../Models/place_model');
 
 			var newDate = new Date();
 
-			Devotional.find({showDate:{$lt: newDate}},'',{sort:{date:-1}},function (err,docs){
+			Devotional.find({showDate:{$lt: newDate}},'',{sort:{showDate:-1}},function (err,docs){
 
 				response.send(docs);
 			})
