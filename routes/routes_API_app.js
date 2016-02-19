@@ -6,6 +6,7 @@ var path = require('path');
 var  User = require('../Models/user_model');
 var  Post = require('../Models/post_model');
 var  Devotional = require('../Models/devotional_model');
+var  Place = require('../Models/place_model');
 
 
 	app.route('/api/login')
@@ -254,7 +255,7 @@ var  Devotional = require('../Models/devotional_model');
 
 					var newDate = new Date();
 
-					Devotional.find({showDate:{$lt: newDate}},'',{sort:{date:-1}},function (err,docs){
+					Devotional.find({showDate:{$lt: newDate}},'',{sort:{showDate:-1}},function (err,docs){
 
 						response.send(docs);
 					})
@@ -375,6 +376,31 @@ var  Devotional = require('../Models/devotional_model');
 			})
 
 		})
+
+	app.route('/api/devotional/:date/:token')
+
+		.get(function (request,response){
+
+			var token = request.params.token;
+
+			RedisClient.exists(token, function (err, reply){
+
+				if(reply===1){
+
+					var newDate = new Date(request.params.date);
+
+					Devotional.find({showDate:{$lt: newDate}},'',{sort:{date:-1}},function (err,docs){
+
+						console.log('Numero de Devocionales Enviados '+docs.length)
+						response.send(docs);
+					})
+
+				}else{
+					response.sendStatus(404);
+				}
+			})
+
+		})
 	
 	app.route('/api/devotional/img/:_id/:token')
 
@@ -435,6 +461,17 @@ var  Devotional = require('../Models/devotional_model');
 					response.sendStatus(404);
 				}
 			})
+		})
+
+	app.route('/api/place')
+
+		.get(function (request,response){
+
+			Place.find('','',function (err,docs){
+
+				response.send(docs);
+			})
+
 		})
 
 });
