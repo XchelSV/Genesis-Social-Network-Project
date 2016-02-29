@@ -101,10 +101,10 @@ html(lang='en',ng-app='Genesis')
 
                   .row(style='margin-top:8%')
                     .col-md-1()
-                      button.btn.btn-sm.btn-danger(id='like{{post._id}}', ng-click='like(post._id)', data-toggle="tooltip", data-placement="top", title="A {{post.like.length}} personas les gusta esto", type='button',ng-mouseover='showLikeTooltip(post._id)',ng-class = "{'active-like-pray': getLikeButtonStatus(post._id) == true}")
+                      button.btn.btn-danger(id='like{{post._id}}', ng-click='like(post._id)', data-toggle="tooltip", data-placement="top", title="A {{post.like.length}} personas les gusta esto", type='button',ng-mouseover='showLikeTooltip(post._id)',ng-class = "{'active-like-pray': getLikeButtonStatus(post._id) == true}")
                         span.glyphicon.glyphicon-heart
-                    .col-md-1.col-md-offset-1
-                      button.btn.btn-sm.btn-primary(id='pray{{post._id}}', ng-click='pray4You(post._id)', style='background: url("img/religion20.png")center no-repeat;padding-left: 15px;width:35px;height:30px;', data-toggle="tooltip", data-placement="top" ,title="{{post.pray4You.length}} personas estan orando por esto", type='button',ng-mouseover='showPrayTooltip(post._id)',ng-class = "{'active-like-pray': getPrayButtonStatus(post._id) == true}")
+                    .col-md-2
+                      button.btn.btn-primary(id='pray{{post._id}}', ng-click='pray4You(post._id)', style='background: url("img/religion20.png")center no-repeat;padding-left: 15px;width:40px;height:35px;', data-toggle="tooltip", data-placement="top" ,title="{{post.pray4You.length}} personas estan orando por esto", type='button',ng-mouseover='showPrayTooltip(post._id)',ng-class = "{'active-like-pray': getPrayButtonStatus(post._id) == true}")
                         
 
 
