@@ -79,8 +79,8 @@ html(lang='en',ng-app='Genesis')
 
                 
                 
-          
-            .col-md-4(ng-repeat='post in posts')
+          .row
+            .col-md-6(ng-repeat='post in posts')
               .well.animated.bounceInUp
                   
                   .row
@@ -94,7 +94,7 @@ html(lang='en',ng-app='Genesis')
 
                   .row(style='margin-top:5%',ng-if='post.img',align='center')
                     .col-md-14
-                      img(src='img/postPhotos/{{post._id}}.jpg').img-responsive
+                      img(src='img/postPhotos/{{post._id}}.jpg').img-responsive.img-rounded
                   .row(style='margin-top:5%',align='center')
                     .col-md-10.col-md-offset-1(style="white-space: pre-line;")
                       {{post.body}}
