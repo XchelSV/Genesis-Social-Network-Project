@@ -119,6 +119,56 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies','angular-uuid','Local
 			alert('AJAX posts erros');
 		})
 
+		$scope.accessToPost = function (user_id){
+
+			console.log(user_id);
+			if($cookies.session != undefined){
+				if($cookies.id == user_id){
+					return true;
+				}
+				else{
+					return false;
+				}
+			}
+			else{
+				return false;
+			}
+
+		}
+
+		$scope.showPostDetails = function (id){
+
+			$http.get('/post/'+id).success(function (data, status, headers, config){
+					
+					$scope.postDetails = data;
+					
+				})
+				.error(function (){
+					alert('AJAX error in details Post');
+					
+				})
+
+		}
+
+		$scope.deletePost = function (id,img){
+
+			$http.delete('/post/'+img+'/'+id).success(function (data, status, headers, config){
+					
+					var postDeleted = angular.element(document.querySelector('#post'+id));
+					postDeleted.removeClass('animated fadeIn');
+					postDeleted.addClass('animated fadeOut');
+					
+
+					var deleteModal = angular.element(document.querySelector('#deleteModal'));
+					deleteModal.modal('hide');
+					
+				})
+				.error(function (){
+					alert('AJAX error in details Post');
+					
+				})
+
+		}
 
 		$scope.showLikeTooltip = function (button_id){
 
