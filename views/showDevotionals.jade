@@ -65,7 +65,7 @@ html(lang='en',ng-app='Genesis')
       main.cd-main-content
         .jumbotron(style = 'margin-top : 1%')
               .row
-                .col-sm-6.col-md-4(ng-repeat='devotional in devotionals')
+                .col-sm-6.col-md-6(ng-repeat='devotional in devotionals')
                   .thumbnail
                     img(src='img/genesis_MAX+PIX.png', alt='No avaliable Image',ng-hide='devotional.img')
                     img(src='img/devotionalPhotos/{{devotional._id}}.jpg', alt='...',ng-if='devotional.img').img-responsive
@@ -76,7 +76,7 @@ html(lang='en',ng-app='Genesis')
                         span(am-time-ago='devotional.showDate') 
                       p(style='margin-top:14%')
                         a(href='/devotionals/{{devotional._id}}') 
-                          button.btn.btn-primary Ver Devocional
+                          button.btn.btn-lg.btn-primary Ver Devocional
 
               .row(style='margin-top:10%')
                 .col-md-4.col-md-offset-8
@@ -142,7 +142,7 @@ html(lang='en',ng-app='Genesis')
                                         | Biografía:
 
                                      .row.margin-top
-                                      .col-md-10.col-md-offset-1()
+                                      .col-md-10.col-md-offset-1(style="white-space: pre-line;")
                                         {{biography}}
 
             .row
