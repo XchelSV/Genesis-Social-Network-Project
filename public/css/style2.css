@@ -24,6 +24,10 @@ body {
  background: #1C1C1C;
 }
 
+.dropdown-menu {
+    min-width: 10px !important;
+}
+
 .modal-dialog {
       
       margin-top: 10%;
