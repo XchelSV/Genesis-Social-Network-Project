@@ -274,6 +274,26 @@ var  Place = require('../Models/place_model');
 
 			})
 
+	app.route('/post/:img/:_id') // Audio & Video yet
+
+			.delete(function (request,response){
+
+				var id = request.params._id;
+				var img = request.params.img;
+
+				Post.remove({_id:id},function (err,deleted){
+
+					if (img){
+						console.log('its deleted');
+						var fs = require('fs');
+						fs.unlinkSync('./public/img/postPhotos/'+id+'.jpg');
+					}
+					response.sendStatus(200);
+
+				})
+
+			})
+
 
 	app.route('/post/like')
 
