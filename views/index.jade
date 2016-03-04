@@ -81,18 +81,32 @@ html(lang='en',ng-app='Genesis')
                 
           .row
             .col-md-6(ng-repeat='post in posts')
-              .well.animated.bounceInUp
+              .well(id='post{{post._id}}').animated.bounceInUp
                   
-                  .row
+                  .row(style='font-size:110%')
                     .col-md-1
-                        img(src='img/userPhotos/{{post.user_id}}.jpg',height='35',width='35').img-circle
+                        img(src='img/userPhotos/{{post.user_id}}.jpg',height='45',width='45').img-circle
 
-                    .col-md-6(style='margin-top:3%')
+                    .col-md-5(style='margin-top:2%')
                         {{post.userName}}
                     .col-md-5(style='margin-top:3%')
                       span(am-time-ago='post.date')
+                    .col-md-1.dropdown
+                      button.close.dropdown-toggle(type='button',id="dLabel",data-toggle="dropdown", aria-haspopup="true", aria-expanded="false")
+                        span(aria-hidden='true') &times;
 
-                  .row(style='margin-top:5%',ng-if='post.img',align='center')
+                      ul.dropdown-menu(aria-labelledby='dLabel')
+                        li(ng-if='accessToPost(post.user_id)')
+                          a(href='#')
+                            |Editar
+                        li(ng-if='accessToPost(post.user_id)')
+                          a(href='#deleteModal', data-toggle="modal",ng-click='showPostDetails(post._id)')
+                            |Eliminar
+                        li
+                          a(href='#')
+                            |Denunciar
+
+                  .row(style='margin-top:3%',ng-if='post.img',align='center')
                     .col-md-14
                       img(src='img/postPhotos/{{post._id}}.jpg').img-responsive.img-rounded
                   .row(style='margin-top:5%',align='center')
@@ -165,7 +179,7 @@ html(lang='en',ng-app='Genesis')
                                         | Biografía:
 
                                      .row.margin-top
-                                      .col-md-10.col-md-offset-1()
+                                      .col-md-10.col-md-offset-1(style="white-space: pre-line;")
                                         {{biography}}
 
             .row
@@ -239,6 +253,7 @@ html(lang='en',ng-app='Genesis')
             .row
               .col-md-10.col-md-offset-1
                 h2(style='font-size:140%;margin-top:6%;',align='center') ¡Es un gusto saber que te agrada nuestro trabajo!
+
         
 
 
@@ -259,6 +274,30 @@ html(lang='en',ng-app='Genesis')
             .row
               .col-md-10.col-md-offset-1
                 h2(style='font-size:140%;margin-top:8%;',align='center') ¡Tus Oraciones son muy importantes para continuar en nuestra obra!
+          //
+
+
+        //Delete Modal
+    #deleteModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='mySmallModalLabel')
+      .modal-dialog(role='document')
+        .modal-content
+          .modal-header(id="gridSystemModalLabel")
+              button.close(type='button', data-dismiss='modal', aria-label='Close')
+                span(aria-hidden='true') &times;
+              .row
+                .col-md-6.col-md-offset-4.text-warning
+                  h1(style='font-size:150%') ¿Eliminar?
+          .modal-body(id="gridSystemModalLabel")
+            
+            .row
+              .col-md-10.col-md-offset-1
+                h2(style='font-size:110%;margin-top:2%;',align='center') ¿Esta Seguro que deseas eliminar esta Publicación?
+        
+          .modal-footer
+
+              button.btn.btn-default(type='button', data-dismiss='modal') Cancelar
+              button.btn.btn-danger(type='button',ng-click='deletePost(postDetails._id,postDetails.img)') Aceptar
+
           //
 
 
