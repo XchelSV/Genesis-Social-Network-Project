@@ -79,6 +79,12 @@ html(lang='en',ng-app='Genesis')
                       label Cumpleaños:
                       input.form-control(type='date',name='birth',style = 'margin-top : 1%')
                     .form-group
+                      label Tipo:
+                      select.form-control(name='type',style = 'margin-top : 1%',required)
+                        option(value='')
+                        option(value='0') Misionero
+                        option(value='1') Administrador 
+                    .form-group
                       label Lugar de Servicio:
                       select.form-control(name='place',required,style = 'margin-top : 1%')
                         option(value='')
