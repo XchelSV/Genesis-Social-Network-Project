@@ -101,12 +101,12 @@ html(lang='en',ng-app='Genesis')
 
              
 
-            .row(style='margin-top:4%')
+            .row(style='margin-top:4%',ng-if='userType')
               .col-md-3.col-md-offset-5
                 a(href='/addUser')
                   button.btn.btn-primary.btn-lg() Registrar Misionero
               .col-md-3
-                a(href='/addPlace')
+                a(href='/addPlace',ng-if='userType')
                   button.btn.btn-primary.btn-lg() Registrar Ciudad de Trabajo
 
 
