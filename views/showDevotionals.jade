@@ -66,19 +66,41 @@ html(lang='en',ng-app='Genesis')
         .jumbotron(style = 'margin-top : 1%')
               .row
                 .col-sm-6.col-md-6(ng-repeat='devotional in devotionals')
-                  .thumbnail
+                  .thumbnail(id='devotional{{devotional._id}}')
                     img(src='img/genesis_MAX+PIX.png', alt='No avaliable Image',ng-hide='devotional.img')
                     img(src='img/devotionalPhotos/{{devotional._id}}.jpg', alt='...',ng-if='devotional.img').img-responsive
                     .caption
-                      h2(style='font-size:130%') {{devotional.title}}
-                      h3(style='margin-top:2%') {{devotional.body.slice(0,140)}} ...
-                      h4(style='margin-top:5%').pull-right
-                        span(am-time-ago='devotional.showDate') 
-                      p(style='margin-top:14%')
-                        a(href='/devotionals/{{devotional._id}}') 
-                          button.btn.btn-lg.btn-primary Ver Devocional
+                      .row(style='margin-top:4%')
+                        .col-md-8.col-md-offset-2
+                          h2(style='font-size:130%') {{devotional.title}}
+                        .col-md-offset-1.col-md-1.dropdown
+                          button.close.dropdown-toggle(type='button',id="dLabel",data-toggle="dropdown", aria-haspopup="true", aria-expanded="false")
+                            span(aria-hidden='true') &times;
 
-              .row(style='margin-top:10%')
+                          ul.dropdown-menu(aria-labelledby='dLabel')
+                            li(ng-if='userType')
+                              a(href='#')
+                                |Editar
+                            li(ng-if='userType')
+                              a(href='#deleteModal', data-toggle="modal",ng-click='showDevotionalDetails(devotional._id)')
+                                |Eliminar
+                            li
+                              a(href='#')
+                                |Denunciar
+
+                      .row
+                        .col-md-offset-1.col-md-10
+                          h3(style='margin-top:2%') {{devotional.body.slice(0,140)}} ...
+                      .row
+                        .col-md-5.col-md-offset-7
+                          h4(style='margin-top:5%')
+                            span(am-time-ago='devotional.showDate') 
+                      .row
+                        p(style='margin-top:5%')
+                          a(href='/devotionals/{{devotional._id}}') 
+                            button.btn.btn-lg.btn-primary Ver Devocional
+
+              .row(style='margin-top:10%',ng-if='userType')
                 .col-md-4.col-md-offset-8
                   a(href='/addDevotional')
                     button.btn.btn-primary.btn-lg() Crear Devocional
@@ -145,15 +167,7 @@ html(lang='en',ng-app='Genesis')
                                       .col-md-10.col-md-offset-1(style="white-space: pre-line;")
                                         {{biography}}
 
-            .row
-              .col-md-offset-1.col-md-11
-                   .list-group
-                      a.list-group-item.active(href='#',align='center')
-                        | Publicaciones Recientes 
-                      a.list-group-item(href='#') Dapibus ac facilisis in
-                      a.list-group-item(href='#') Morbi leo risus
-                      a.list-group-item(href='#') Porta ac consectetur ac
-                      a.list-group-item(href='#') Vestibulum at eros
+          
                               
                   
 
@@ -166,6 +180,30 @@ html(lang='en',ng-app='Genesis')
           // cd-panel-content
         // cd-panel-container
       // cd-panel
+
+      //Delete Modal
+    #deleteModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='mySmallModalLabel')
+      .modal-dialog(role='document')
+        .modal-content
+          .modal-header(id="gridSystemModalLabel")
+              button.close(type='button', data-dismiss='modal', aria-label='Close')
+                span(aria-hidden='true') &times;
+              .row
+                .col-md-6.col-md-offset-4.text-warning
+                  h1(style='font-size:150%') ¿Eliminar?
+          .modal-body(id="gridSystemModalLabel")
+            
+            .row
+              .col-md-10.col-md-offset-1
+                h2(style='font-size:110%;margin-top:2%;',align='center') ¿Esta Seguro que deseas eliminar este Devocional?
+        
+          .modal-footer
+
+              button.btn.btn-default(type='button', data-dismiss='modal') Cancelar
+              button.btn.btn-danger(type='button',ng-click='deleteDevotional(devotionalDetails._id,devotionalDetails.img,devotionalDetails.audio,devotionalDetails.video)') Aceptar
+
+          //
+
 
       script(src='/socket.io/socket.io.js')
       script(type='text/javascript').
