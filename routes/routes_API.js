@@ -49,7 +49,7 @@ var  Place = require('../Models/place_model');
 								});
 								RedisClient.expire(request.session._id,3600);
 								response.cookie('session',encodeURIComponent(user._id));
-
+								response.cookie('type', encodeURIComponent(user.type));
 								response.cookie('id', encodeURIComponent(user._id));
 								response.cookie('name',encodeURIComponent(user.name));
 								response.cookie('day',encodeURIComponent(date.getDate()+1));
@@ -157,6 +157,7 @@ var  Place = require('../Models/place_model');
 					password: request.body.pass,
 					birthday: request.body.birth,
 					biography: request.body.bio,
+					type: request.body.type,
 					servicePlace: request.body.place,
 					
 				})
@@ -283,7 +284,7 @@ var  Place = require('../Models/place_model');
 
 				Post.remove({_id:id},function (err,deleted){
 
-					if (img){
+					if (img === 'true'){
 						console.log('its deleted');
 						var fs = require('fs');
 						fs.unlinkSync('./public/img/postPhotos/'+id+'.jpg');
@@ -491,6 +492,56 @@ var  Place = require('../Models/place_model');
 			})
 
 		})
+
+	app.route('/devotional/:_id')
+
+		.get(function (request,response){
+
+			var devotionalId = request.params._id;
+			Devotional.findById(devotionalId, function (err,doc){
+				
+				response.send(doc);
+
+			})
+
+
+		})
+
+	app.route('/devotional/:_id/:img/:audio/:video')
+
+		.delete(function (request,response){
+
+			var id = request.params._id;
+			var img = request.params.img;
+			var audio = request.params.audio;
+			var video = request.params.video;
+
+			console.log(img);
+			console.log(audio);
+			console.log(video);
+
+				Devotional.remove({_id:id},function (err,deleted){
+
+					if (img === 'true'){
+						console.log('its deleted');
+						var fs = require('fs');
+						fs.unlinkSync('./public/img/devotionalPhotos/'+id+'.jpg');
+					}
+					if (audio === 'true'){
+						console.log('its deleted');
+						var fs = require('fs');
+						fs.unlinkSync('./public/audio/devotionalAudios/'+id+'.mp3');
+					}
+					if (video === 'true'){
+						console.log('its deleted');
+						var fs = require('fs');
+						fs.unlinkSync('./public/video/devotionalVideos/'+id+'.mp4');
+					}
+					response.sendStatus(200);
+
+				})			
+
+		})	
 
 	app.route('/place')
 
