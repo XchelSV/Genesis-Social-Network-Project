@@ -129,6 +129,65 @@ var  Place = require('../Models/place_model');
 
 		})
 
+	app.route('/api/post/:_id') //
+
+			.get(function (request,response){
+
+					var id = request.params._id;
+					Post.findById(id, function (err,doc){
+						response.send(doc);
+
+					})
+
+	})
+
+	app.route('/api/post/:img/:_id/:token') // Audio & Video yet
+
+			.delete(function (request,response){
+
+				var id = request.params._id;
+				var img = request.params.img;
+				var token = request.params.token;
+
+				RedisClient.exists(token, function (err, reply){
+
+					if(reply===1){
+
+						
+
+						RedisClient.get(token, function (err,userId){
+						
+							Post.findById(id,function (err,post){
+
+								if (userId === post.user_id){
+
+									Post.remove({_id:id},function (err,deleted){
+
+										if (img === 'true' || img === true){
+											console.log('its deleted from API');
+											var fs = require('fs');
+											fs.unlinkSync('./public/img/postPhotos/'+id+'.jpg');
+										}
+										response.sendStatus(200);
+
+									})
+
+								}
+								else{
+									response.sendStatus(401);
+								}
+
+							})	
+						})
+					}
+					else{
+
+						response.sendStatus(401);
+
+					}
+				})
+			})
+
 	app.route('/api/post')
 
 		.get(function (request,response){
@@ -242,6 +301,80 @@ var  Place = require('../Models/place_model');
 
 			
 		})
+	
+	app.route('/api/devotional/:_id') //
+
+		.get(function (request,response){
+
+			var devotionalId = request.params._id;
+			Devotional.findById(devotionalId, function (err,doc){
+				
+				response.send(doc);
+
+			})
+
+
+		})
+
+	app.route('/api/devotional/:_id/:img/:audio/:video/:token') //
+
+		.delete(function (request,response){
+
+			var id = request.params._id;
+			var img = request.params.img;
+			var audio = request.params.audio;
+			var video = request.params.video;
+			var token = request.params.token;
+
+				RedisClient.exists(token, function (err, reply){
+
+					if(reply===1){
+
+						RedisClient.get(token, function (err,userId){
+
+							User.findById(userId, function (err,user){
+
+								if (user.type === true){
+
+									Devotional.remove({_id:id},function (err,deleted){
+
+										if (img === 'true' || img === true){
+											console.log('its deleted');
+											var fs = require('fs');
+											fs.unlinkSync('./public/img/devotionalPhotos/'+id+'.jpg');
+										}
+										if (audio === 'true' || audio === true){
+											console.log('its deleted');
+											var fs = require('fs');
+											fs.unlinkSync('./public/audio/devotionalAudios/'+id+'.mp3');
+										}
+										if (video === 'true' || video === true){
+											console.log('its deleted');
+											var fs = require('fs');
+											fs.unlinkSync('./public/video/devotionalVideos/'+id+'.mp4');
+										}
+										response.sendStatus(200);
+
+									})
+
+								}
+								else{
+
+									response.sendStatus(401);
+
+								}
+
+							})	
+
+								
+						})
+					}
+					else{
+						response.sendStatus(401);
+					}
+				})		
+
+		})	
 
 	app.route('/api/devotional/:token')
 

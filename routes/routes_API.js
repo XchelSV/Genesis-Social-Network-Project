@@ -284,7 +284,7 @@ var  Place = require('../Models/place_model');
 
 				Post.remove({_id:id},function (err,deleted){
 
-					if (img === 'true'){
+					if (img === 'true' || img === true){
 						console.log('its deleted');
 						var fs = require('fs');
 						fs.unlinkSync('./public/img/postPhotos/'+id+'.jpg');
