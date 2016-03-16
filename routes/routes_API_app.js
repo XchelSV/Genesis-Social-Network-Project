@@ -1,5 +1,6 @@
 module.exports = (function (app,ObjectId,uuid,RedisClient){
 
+var moment = require('moment-timezone');
 var bcrypt = require('bcrypt')	
 var path = require('path');
 		//Models Requires
@@ -247,7 +248,7 @@ var  Place = require('../Models/place_model');
 							body:request.body.body,
 							like:[],
 							pray4You:[],
-							date:request.body.date,
+							date: moment().tz("America/Mexico_City").format(),
 							img:img,
 							audio:audio,
 							video:video
