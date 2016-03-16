@@ -203,6 +203,93 @@ var  Place = require('../Models/place_model');
 
 		})
 
+	app.route('/api/post/like')
+
+			.post(function (request,response){
+
+				var id = request.body.phoneId;
+				var postId = request.body.postId;
+				var flag = true;
+
+				Post.findById(postId,function (err,doc){
+					for (var i = 0; i < doc.like.length; i++) {
+						if (id == doc.like[i]){
+
+							flag = false;
+							break;
+
+						}
+					};
+
+					if (flag){
+
+						Post.update({_id:postId},{$push: {'like':id}},{upsert:true},function(err){
+				        
+							        if(err){
+							                console.log(err);
+							        }else{
+							                console.log("Successfully like Added from user: "+id);
+							                response.sendStatus(200);
+							        }
+						})
+					}
+					else{
+						doc.like.pull(id);
+						doc.save(function (err){
+							if (err) {throw err};
+							console.log('Like from user '+id+' was removed')
+							response.sendStatus(202);
+						})
+						
+					}
+				})
+
+		})
+
+	app.route('/api/post/pray')
+
+		.post(function (request,response){
+
+				var id = request.body.phoneId;
+				var postId = request.body.postId;
+				var flag = true;
+
+				Post.findById(postId,function (err,doc){
+					for (var i = 0; i < doc.pray4You.length; i++) {
+						if (id == doc.pray4You[i]){
+
+							flag = false;
+							break;
+
+						}
+					};
+
+					if (flag){
+
+						Post.update({_id:postId},{$push: {'pray4You':id}},{upsert:true},function(err){
+				        
+					        if(err){
+					                console.log(err);
+					        }else{
+					                console.log("Successfully pray4You Added from user: "+id);
+					                response.sendStatus(200);
+					        }
+						})
+					}
+					else{
+						doc.pray4You.pull(id);
+						doc.save(function (err){
+							if (err) {throw err};
+							console.log('Pray4You from user '+id+' was removed')
+							response.sendStatus(202);
+						})
+						
+					}
+				})
+
+
+		})
+
 
 	app.route('/api/post/:token')
 
@@ -295,7 +382,7 @@ var  Place = require('../Models/place_model');
 					
 				} 
 				else {
-					response.send(404);
+					response.sendStatus(404);
 				}
 				
 			});
@@ -607,5 +694,26 @@ var  Place = require('../Models/place_model');
 			})
 
 		})
+
+	app.route('/api/users/place/:_placeId')
+
+		.get(function (request,response){
+
+			var id = request.params._placeId;
+
+			Place.findById(id, function (err, place){
+				
+				User.find({servicePlace: place.formatted_address},function (err, users){
+
+					response.send(users);
+
+				})
+
+			})
+
+		})
+
+
+
 
 });
