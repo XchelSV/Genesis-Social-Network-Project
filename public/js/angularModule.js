@@ -78,11 +78,13 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies','angular-uuid','Local
 		console.log($cookies.temporalSession);
 
 		$scope.posts = [];
+		$scope.numberOfPosts;
 
 
 		$http.get('/posts').success(function (data, status, headers, config){
 			
 			$scope.posts = data;
+			$scope.numberOfPosts = data.length;
 
 			for (var i = 0; i < data.length; i++) {
 			 	for (var j = 0; j < data[i].like.length; j++) {
@@ -118,6 +120,62 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies','angular-uuid','Local
 		.error(function (){
 			alert('AJAX posts erros');
 		})
+
+		$scope.morePosts = function (){
+
+
+			$http.get('/posts/'+$scope.numberOfPosts).success(function (data, status, headers, config){
+			
+			if(data.length != 0) {
+
+				for (var l=0; l < data.length; l++) {
+						
+					$scope.posts.push(data[l]);
+
+				};
+				console.log($scope.posts);
+
+				for (var i = 0; i < data.length; i++) {
+				 	for (var j = 0; j < data[i].like.length; j++) {
+				 		if ($cookies.session) {
+				 			if($cookies.session == data[i].like[j]){
+				 				localStorageService.set('like'+data[i]._id,true);
+				 			}
+				 		}
+				 		else{
+				 			if($cookies.temporalSession == data[i].like[j]){
+				 				localStorageService.set('like'+data[i]._id,true);
+				 			}
+				 		}
+				 	};
+
+				 	for (var k = 0; k < data[i].pray4You.length; k++) {
+				 		if ($cookies.session) {
+				 			
+				 			if($cookies.session == data[i].pray4You[k]){
+				 				localStorageService.set('pray'+data[i]._id,true);
+				 			}
+				 		}
+				 		else{
+				 			
+				 			if($cookies.temporalSession == data[i].pray4You[k]){
+				 				localStorageService.set('pray'+data[i]._id,true);
+				 			}
+				 		}
+				 	};
+				};
+
+				$scope.numberOfPosts = $scope.numberOfPosts+data.length;
+
+				}
+
+			})
+			.error(function (){
+				alert('AJAX more posts error');
+			})	
+
+
+		}	
 
 		$scope.accessToPost = function (user_id){
 
@@ -329,6 +387,7 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies','angular-uuid','Local
 						
 						var postModal = angular.element(document.querySelector('#postModal'));
 						postModal.modal('hide');
+					$scope.numberOfPosts++;
 
 					
 
@@ -344,7 +403,7 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies','angular-uuid','Local
 						var postModal = angular.element(document.querySelector('#postModal'));
 						postModal.modal('hide');
 
-					
+					$scope.numberOfPosts++;
 				}
 			}
 
