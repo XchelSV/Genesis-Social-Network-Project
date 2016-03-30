@@ -262,6 +262,26 @@ var  Place = require('../Models/place_model');
 			})
 
 		})
+	
+	app.route('/posts/:lengthOfLastPostBlock')
+
+		.get(function (request, response){
+			
+			var init = request.params.lengthOfLastPostBlock;
+			var limit = request.params.lengthOfLastPostBlock + 11;
+
+			Post.find('','',{skip:init,limit:limit,sort:{date:-1}},function (err, docs){
+
+				if (err) throw err;
+				
+				
+				response.send(docs);
+
+			})
+
+
+
+		})
 
 	app.route('/post/:_id')
 
