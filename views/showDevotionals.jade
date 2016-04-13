@@ -100,7 +100,7 @@ html(lang='en',ng-app='Genesis')
                           a(href='/devotionals/{{devotional._id}}') 
                             button.btn.btn-lg.btn-primary Ver Devocional
 
-              .row(style='margin-top:10%',ng-if='userType')
+              .row(style='margin-top:10%',ng-if='sessionType()')
                 .col-md-4.col-md-offset-8
                   a(href='/addDevotional')
                     button.btn.btn-primary.btn-lg() Crear Devocional
