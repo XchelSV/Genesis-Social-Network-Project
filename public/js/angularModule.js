@@ -449,6 +449,14 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies','angular-uuid','Local
 				return false;
 			}
 		}
+		$scope.sessionType = function(){
+			if($scope.userType == 'true'){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
 
 		$scope.id = decodeURIComponent($cookies.id);
 		$scope.name = decodeURIComponent($cookies.name);
@@ -530,6 +538,14 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies','angular-uuid','Local
 		
 		$scope.session = function(){
 			if($cookies.session != undefined){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		$scope.sessionType = function(){
+			if($scope.userType == 'true'){
 				return true;
 			}
 			else{
