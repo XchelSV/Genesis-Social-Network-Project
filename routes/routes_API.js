@@ -1,6 +1,7 @@
 module.exports = (function (app,ObjectId,uuid,RedisClient){
 
 var bcrypt = require('bcrypt')	
+var imagemin = require('image-min');
 		//Models Requires
 var  User = require('../Models/user_model');
 var  Post = require('../Models/post_model');
@@ -92,9 +93,10 @@ var  Place = require('../Models/place_model');
 					response.clearCookie('month');
 					response.clearCookie('servicePlace');
 					response.clearCookie('biography');
-					response.clearCookie('session')
-					response.clearCookie('attempPass')
-					response.clearCookie('attempUser')
+					response.clearCookie('type');
+					response.clearCookie('session');
+					response.clearCookie('attempPass');
+					response.clearCookie('attempUser');
 					response.redirect('/');
 
 				})
@@ -247,7 +249,8 @@ var  Place = require('../Models/place_model');
 					   var is = fs.createReadStream(path);
 					   var os = fs.createWriteStream(newPath);
 
-					   is.pipe(os)
+					   is.pipe(imagemin({ ext: '.jpg' }))
+					   	 .pipe(os);
 
 					   is.on('end', function() {
 						      //eliminamos el archivo temporal

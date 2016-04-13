@@ -1,7 +1,8 @@
 module.exports = (function (app,ObjectId,uuid,RedisClient){
 
 var moment = require('moment-timezone');
-var bcrypt = require('bcrypt')	
+var bcrypt = require('bcrypt');
+var imagemin = require('image-min');	
 var path = require('path');
 		//Models Requires
 var  User = require('../Models/user_model');
@@ -362,7 +363,8 @@ var  Place = require('../Models/place_model');
 							   var is = fs.createReadStream(path);
 							   var os = fs.createWriteStream(newPath);
 
-							   is.pipe(os)
+							   is.pipe(imagemin({ ext: '.jpg' }))
+							   	 .pipe(os);
 
 							   is.on('end', function() {
 								      //eliminamos el archivo temporal
