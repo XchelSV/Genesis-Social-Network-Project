@@ -128,6 +128,17 @@ var  Place = require('../Models/place_model');
 
 		.delete(function (request, response){
 			
+			var user_id = request.params.id;
+			User.remove({_id: user_id}, function (err,deleted){
+
+				if (err){
+					throw err;
+				}
+				else{
+					response.sendStatus(200);
+				}
+
+			})
 		})
 
 
@@ -590,6 +601,36 @@ var  Place = require('../Models/place_model');
 			Place.find('','',function (err,docs){
 
 				response.send(docs);
+			})
+
+		})
+
+	app.route('/place/:_id')
+
+		.delete(function (request,response){
+
+			var placeId = request.params._id;
+
+			Place.findById(placeId, function (err,place){
+				if (err) throw response.sendStatus(500);
+
+				User.remove({servicePlace: place.formatted_address},function (err, docs){
+					if (err) throw err;
+					
+					Place.remove({_id: placeId}, function (err, deleted){
+
+						if (err) {
+							response.sendStatus(500);
+						}
+						else{
+							response.sendStatus(200);
+						}
+
+					})
+
+				})
+
+
 			})
 
 		})

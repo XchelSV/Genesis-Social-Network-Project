@@ -570,6 +570,29 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies','angular-uuid','Local
 				      // log error
 			});*/
 
+		$scope.place_choosen = function(place_id){
+
+			$scope.place_id_selected = place_id;
+			console.log($scope.place_id_selected)
+
+		}
+
+		$scope.delete_place = function(){
+			
+			$http.delete('/place/'+$scope.place_id_selected).
+
+				success(function (data, status, headers, config) {
+					 
+					 window.location.reload();
+
+					 
+			 	}).
+				error(function (data, status, headers, config) {
+					      alert('Error, Place cant be deleted')
+				});
+
+		}
+
 		$http.get('/place').
 
 			success(function (data, status, headers, config) {
@@ -600,28 +623,54 @@ var app = angular.module('Genesis',['ngRoute', 'ngCookies','angular-uuid','Local
 				return false;
 			}
 		}
+	
+		$scope.admin_session = function(){
+			if($cookies.type === 'true'){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
 		$scope.id = decodeURIComponent($cookies.id);
 		$scope.name = decodeURIComponent($cookies.name);
 		$scope.day = decodeURIComponent($cookies.day);
 		$scope.month = decodeURIComponent($cookies.month);
 		$scope.servicePlace = decodeURIComponent($cookies.servicePlace);
 		$scope.biography = decodeURIComponent($cookies.biography);
+		
 
 		$scope.showDetails = function (id){
 
 			$http.get('/user/'+id).
 
-			success(function (data, status, headers, config) {
-				 $scope.userDetails = data;
-				 var userDate = new Date(data.birthday);
-				 $scope.userMonth = userDate.getMonth()+1;
-				 $scope.userDay = userDate.getDate()+1;
+				success(function (data, status, headers, config) {
+					 $scope.userDetails = data;
+					 var userDate = new Date(data.birthday);
+					 $scope.userMonth = userDate.getMonth()+1;
+					 $scope.userDay = userDate.getDate()+1;
 
-				 
-		 	}).
-			error(function (data, status, headers, config) {
-				      // log error
-			});
+					 
+			 	}).
+				error(function (data, status, headers, config) {
+					      // log error
+				});
+
+		}
+
+		$scope.deleteUser = function(){
+
+			$http.delete('/user/'+$scope.userDetails._id).
+
+				success(function (data, status, headers, config) {
+					 
+					 window.location.reload();
+
+					 
+			 	}).
+				error(function (data, status, headers, config) {
+					  alert('Error, User cant be deleted')
+				});
 
 		}
 
