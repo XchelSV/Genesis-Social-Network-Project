@@ -32,26 +32,6 @@ block content
       main.cd-main-content
         .jumbotron(style = 'margin-top : 1%')
           h2(style='font-size: 150%') Equipos de Trabajo
-          p
-            //.row(style='margin-top: 3%')
-              .col-md-8.col-md-offset-2
-                .table-responsive
-                  table.table.table-hover
-                    tr.info
-                      td Perfil
-                      td Misionero
-                      td Lugar de Servicio
-                      //td Publicaciones
-                      
-                   
-                    tr(ng-repeat='missionary in missionaries')
-                        td 
-                          a(href='#')
-                            img(src='img/userPhotos/{{missionary._id}}.jpg',height='30',width='30').img-circle
-                        td {{missionary.name}}
-                        td {{missionary.servicePlace}}
-                        //td {{missionary.post.length}}
-            
                     
 
             .row(style='margin-top: 3%')
@@ -127,7 +107,7 @@ block content
                         
                      .row.margin-top
                         .col-md-10.col-md-offset-1
-                          a(href='#')
+                          a(href='/edit/user/{{id}}')
                             | Editar Información
 
             .row
@@ -143,19 +123,6 @@ block content
                                       .col-md-10.col-md-offset-1(style="white-space: pre-line;")
                                         {{biography}}
 
-            .row
-              .col-md-offset-1.col-md-11
-                   .list-group
-                      a.list-group-item.active(href='#',align='center')
-                        | Publicaciones Recientes 
-                      a.list-group-item(href='#') Dapibus ac facilisis in
-                      a.list-group-item(href='#') Morbi leo risus
-                      a.list-group-item(href='#') Porta ac consectetur ac
-                      a.list-group-item(href='#') Vestibulum at eros
-                              
-                  
-
-              
             
             .footer.col-md-10.col-md-offset-1
               
