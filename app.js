@@ -21,11 +21,11 @@ var client = redis.createClient();
 
 
 // view engine setup
-app.set('views', './views');
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
-app.use(favicon(__dirname + '/public/favicon.ico'));
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
@@ -39,7 +39,7 @@ app.use(session({
 				resave: 			false
 			}));
 
-app.use(express.static(__dirname+ '/public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 
 var connStr = 'mongodb://localhost:27017/GenesisDB';

@@ -1,39 +1,6 @@
-doctype html
-html(lang='en',ng-app='Genesis')
-  head
-    meta(http-equiv="Content-type" content="text/html" ,charset="UTF-8")
-    meta(http-equiv='X-UA-Compatible', content='IE=edge')
-    meta(name='viewport', content='width=device-width, initial-scale=1')
+extends layout
 
-    link(href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700|Droid+Serif', rel='stylesheet', type='text/css')
-    link(href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css')
-    link(rel='stylesheet', type='text/css', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css')
-    link(rel='stylesheet',type='text/css', href='css/reset.css')
-    link(rel='stylesheet', type='text/css',href='css/animate.css')
-    // CSS reset
-    link(rel='stylesheet', type='text/css',href='css/style2.css')
-    link(rel='stylesheet', type='text/css',href='css/styles.css') 
-    
-
-    script(type='text/javascript', src = 'js/jquery-2.1.1.js')
-    script(type='text/javascript', src = 'js/angular.min.js')
-    script(type='text/javascript' , src = 'js/bootstrap.min.js')
-    script(type='text/javascript', src = 'js/angularModule.js')
-    script(type='text/javascript', src = 'js/socketModule.js')
-    script(type='text/javascript', src = 'js/main.js')
-    script(type='text/javascript' , src = 'js/angular-uuid.js')
-    script(type='text/javascript' , src = 'js/angular-local-storage.min.js')
-    script(src='//momentjs.com/downloads/moment-with-locales.min.js')
-    script(src='//cdnjs.cloudflare.com/ajax/libs/angular-moment/0.10.3/angular-moment.js')
-      
-    // Resource style
-    script(src='js/modernizr.js')
-    // Modernizr
-
-    script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular-route.js')
-    script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular-cookies.js')
-
-    title Genesis Mesoamerica
+block content
   body.animated.fadeIn(ng-controller='indexController')
 
     header
