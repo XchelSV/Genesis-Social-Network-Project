@@ -101,6 +101,42 @@ module.exports = (function (app,ObjectId){
 
 		})
 
+	app.route('/edit/user/:_id')
+
+		.get(function (request,response){
+
+
+			if (request.session._id){
+
+				var user_id = request.params._id;
+				User.findById(user_id, function (err,usr){
+					if (err){
+						response.sendStatus(500);
+					}
+					else{
+
+						Place.find('',function (err,place){
+							
+							if (err){
+								response.sendStatus(500);
+							}
+							else{
+								response.render('editUser',{user:usr,places:place});
+							}
+
+						})
+					}
+				})
+				
+			}
+			else{
+				request.session.destroy(function (err){
+				response.redirect('/');
+				})
+			}
+
+		})
+
 
 	app.route('/user/place/:_placeId')
 

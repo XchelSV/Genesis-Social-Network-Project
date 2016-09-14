@@ -1,0 +1,137 @@
+extends layout
+
+block content
+    body.animated.fadeIn(ng-controller='editUserController')
+        header
+          #cssmenu
+            ul
+              li.active
+                a(href='/')
+                  span Inicio
+              li
+                a(href='/showDevotionals', ng-show = 'session()')
+                  span Devocionales
+              li
+                a(href='/showUsers')
+                  span Misioneros
+              li.last
+                a.cd-btn(href='#' ,ng-show = 'session()')
+                  span Perfil
+              ul.navbar-right
+                li
+              
+                  a(href='/login',ng-hide = 'session()')
+                    span Iniciar Sesión
+             
+                  a(href='/logout',ng-show = 'session()',ng-click='clearStorage()')
+                    span Cerrar Sesión
+
+        .container-fluid
+          
+          main.cd-main-content
+            .jumbotron(style = 'margin-top : 1%')
+              h2(style='font-size: 150%') Perfil Misionero
+              .row
+                p(style = 'margin-top : 3%')
+                 
+                  form(method ='post', action='/user/#{user._id}',enctype="multipart/form-data")
+                    .row
+                      .col-md-5.col-md-offset-1 
+                        .form-group
+                          label Nombre del Misionero:
+                          input.form-control(type='text',name='name', placeholder='Nombre del Misionero',required,style = 'margin-top : 1%', value='#{user.name}')
+                        .form-group
+                          label Contraseña:
+                          input.form-control(type='text',name='pass', placeholder='Contraseña',required,style = 'margin-top : 1%')
+                        .form-group
+                          label Cumpleaños:
+                          input.form-control(type='date',name='birth',style = 'margin-top : 1%')
+
+                        .form-group
+                          label Lugar de Servicio:
+                          select.form-control(name='place',required,style = 'margin-top : 1%')
+                            option(value='')
+                            each val,index in places
+                                option(value=val.formatted_address)= val.formatted_address
+                          
+                        .form-group
+                          label Biografía:
+                          textarea.form-control(rows='6',name='bio',style = 'margin-top : 1%') #{user.biography}
+                      .col-md-3.col-md-offset-1
+                        .form-group
+                          label Imágen de Perfil:
+                          a(href='#',style = 'margin-top : 3%').thumbnail
+                            img(src='/img/1446717642_user-id.png', alt='Perfil').img-rounded#blah
+                          input(type='file',name='photo', accept= '.jpg',required)#imgInp
+                    .row
+                      .col-md-6-col-md-offset-3
+                      button(type='submit').btn.btn-lg.btn-primary Guardar Misionero
+
+
+
+            //panel for real time chat
+          .cd-panel.from-right
+            header.cd-panel-header
+              h1(align='center') Perfil del Misionero
+              a.cd-panel-close(href='#0') Close
+            .cd-panel-container
+              .cd-panel-content
+
+                .row
+                  .col-md-4.col-md-offset-1
+                    a.thumbnail(href='#')
+                      img.img-responsive.img-rounded(src='/img/userPhotos/{{id}}.jpg', alt='img-responsive')
+
+                  .col-md-7
+                    .well.well-lg
+                      h3
+                        .row
+                          .col-md-3
+                            span.glyphicon.glyphicon-user(aria-hidden="true")
+                          .col-md-offset-1
+                            | {{name}}
+
+                        .row.margin-top
+                          .col-md-3
+                             span.glyphicon.glyphicon-gift(aria-hidden="true")
+                          .col-md-offset-1
+                            | Cumpleaños: {{day}}/{{month}}
+
+                         .row.margin-top
+                          .col-md-3
+                            span.glyphicon.glyphicon-pushpin(aria-hidden="true")
+                          .col-md-offset-1
+                            | Lugar de Servicio: 
+                          .row.margin-top
+                            .col-md-offset-3
+                              {{servicePlace}}
+                            
+                         .row.margin-top
+                            .col-md-10.col-md-offset-1
+                              a(href='/edit/user/{{id}}')
+                                | Editar Información
+
+                .row
+                                  .col-md-11.col-md-offset-1
+                                    .well.well-lg
+                                      .row
+                                          .col-md-3
+                                            span.glyphicon.glyphicon-tag(aria-hidden="true")
+                                          .col-md-offset-1
+                                            | Biografía:
+
+                                         .row.margin-top
+                                          .col-md-10.col-md-offset-1(style="white-space: pre-line;")
+                                            {{biography}}
+
+                  
+                
+                .footer.col-md-10.col-md-offset-1
+                  
+                    
+                
+              // cd-panel-content
+            // cd-panel-container
+          // cd-panel
+
+      script(src='/socket.io/socket.io.js')

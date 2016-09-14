@@ -120,9 +120,60 @@ var  Place = require('../Models/place_model');
 
 		.post(function (request, response){
 
+			var user_id = request.params.id;
+			User.findById(user_id, function (err,user){
+
+				if (err) {
+					response.sendStatus(500);
+				}
+				else{
+
+					user.name = request.body.name;
+					user.password = request.body.pass;
+					user.birthday = request.body.birth;
+					user.servicePlace = request.body.place;
+					user.biography = request.body.bio;
+
+					var fs = require('fs')
+
+					   var path = request.files.photo.path;
+					   var newPath =  './public/img/userPhotos/'+user._id+'.jpg';
+
+					   var is = fs.createReadStream(path);
+					   var os = fs.createWriteStream(newPath);
+
+					   is.pipe(os)
+
+					   is.on('end', function() {
+						      //eliminamos el archivo temporal
+						   fs.unlinkSync(path);
+						})
+					user.save();
+
+					response.clearCookie('name');
+					response.clearCookie('day');
+					response.clearCookie('month');
+					response.clearCookie('servicePlace');
+					response.clearCookie('biography');
+
+					var date = new Date(user.birthday);
+					response.cookie('name',encodeURIComponent(user.name));
+					response.cookie('day',encodeURIComponent(date.getDate()+1));
+					response.cookie('month',encodeURIComponent(date.getMonth()+1));
+					response.cookie('servicePlace',encodeURIComponent(user.servicePlace));
+					response.cookie('biography',encodeURIComponent(user.biography));
+
+					response.redirect('/');
+
+				}
+
+			})
+
 		})
 
 		.put(function (request, response){
+
+			
 
 		})
 
