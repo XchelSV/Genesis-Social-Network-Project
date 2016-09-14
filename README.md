@@ -2,8 +2,6 @@
 
 Red Social para Proyecto Génesis de La Iglesia del Nazareno basado en **NodeJS, Mongo DB y Angularjs 1**
 
-![](public/img/logo.png)
-
 ####Requisitos Previos
 
 ######Node JS:
@@ -46,6 +44,8 @@ Para iniciar el servidor se utiliza el siguiente comando:
 * Por default el servidor corre por el puerto 1234
 
 * Asegurate de todo hacerlo dentro del directorio raíz de tu proyecto.
+
+![](public/img/logo.png)
 
 
 
