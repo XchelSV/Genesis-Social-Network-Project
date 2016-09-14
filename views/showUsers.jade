@@ -1,6 +1,12 @@
 extends layout
 
 block content
+
+  style.
+    .places{
+      font-size: 70%;
+    }
+
   body.animated.fadeIn(ng-controller='showUserController')
 
     header
@@ -34,7 +40,7 @@ block content
           h2(style='font-size: 150%') Equipos de Trabajo
                     
 
-            .row(style='margin-top: 3%')
+            .row.places(style='margin-top: 3%')
               .col-md-4(ng-repeat='place in places')
                 .panel.panel-default
                   .panel-body
