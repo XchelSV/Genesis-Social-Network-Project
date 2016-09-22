@@ -1,6 +1,35 @@
 extends layout
 
 block content
+  style.
+        .cropit-preview {
+            background-color: #f8f8f8;
+            background-size: cover;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            margin-top: 7px;
+            width: 400px;
+            height: 280px;
+          }
+
+          /* Translucent background image */
+        .cropit-preview-background {
+          opacity: .2;
+        }
+
+        /*
+         * If the slider or anything else is covered by the background image,
+         * use relative or absolute position on it
+         */
+        input.cropit-image-zoom-input {
+          position: relative;
+        }
+
+        /* Limit the background image by adding overflow: hidden */
+        #image-cropper {
+          overflow: hidden;
+        }
+
   body.animated.fadeIn(ng-controller='indexController')
 
     header
@@ -33,7 +62,7 @@ block content
         .jumbotron(style = 'margin-top : 1%')
           .row
             .col-md-4(ng-if='session()')
-              a(href='#postModal', data-toggle="modal")
+              a(href='#postModal', data-toggle="modal",ng-click='reset_img()')
                 .well
                   .row
                     .col-md-2
@@ -46,18 +75,23 @@ block content
                 
                 
           .row
-            .col-md-6(ng-repeat='post in posts track by $index')
+            .col-md-4(ng-repeat='post in posts track by $index')
               .well(id='post{{post._id}}').animated.bounceInUp
                   
                   .row(style='font-size:110%')
-                    .col-md-1
+                    .col-md-2
                         img(src='/img/userPhotos/{{post.user_id}}.jpg',height='45',width='45').img-circle
 
                     .col-md-5(style='margin-top:2%')
                         {{post.userName}}
-                    .col-md-4(style='margin-top:3%')
+                    .col-md-5(style='margin-top:3%')
                       span(am-time-ago='post.date')
-                    .col-md-2.dropdown
+                    
+                  .row(style='margin-top:8%',ng-if='post.img',align='center')
+                    .col-md-14
+                      img(src='/img/postPhotos/{{post._id}}{{post.ext_img}}').img-responsive.img-rounded
+                  .row(style='margin-top:5%')
+                    .col-md-2.col-md-offset-10.dropdown
                       button.close.dropdown-toggle(type='button',id="dLabel",data-toggle="dropdown", aria-haspopup="true", aria-expanded="false")
                         span(aria-hidden='true') &times;
 
@@ -72,15 +106,12 @@ block content
                           a(href='#')
                             |Denunciar
 
-                  .row(style='margin-top:3%',ng-if='post.img',align='center')
-                    .col-md-14
-                      img(src='/img/postPhotos/{{post._id}}.jpg').img-responsive.img-rounded
-                  .row(style='margin-top:5%',align='center')
+                  .row(style='margin-top:5%',align='justify;center;')
                     .col-md-10.col-md-offset-1(style="white-space: pre-line;")
                       {{post.body}}
 
-                  .row(style='margin-top:8%')
-                    .col-md-1()
+                  .row(style='margin-top:12%')
+                    .col-md-2()
                       button.btn.btn-danger(id='like{{post._id}}', ng-click='like(post._id)', data-toggle="tooltip", data-placement="top", title="A {{post.like.length}} personas les gusta esto", type='button',ng-mouseover='showLikeTooltip(post._id)',ng-class = "{'active-like-pray': getLikeButtonStatus(post._id) == true}")
                         span.glyphicon.glyphicon-heart
                     .col-md-2
@@ -183,15 +214,28 @@ block content
               .row
                 .col-md-12
                   textarea.form-control(rows='6', placeholder='¿Tienes una nueva noticia que contar?',ng-model='postText')
-              .row
-                .col-md-8.col-md-offset-2
-                  a(href='#',style = 'margin-top : 3%',ng-if='myFile').thumbnail
-                    img(src='', alt='Image').img-rounded#blah
 
-            .modal-footer
+                      
+
+            .modal-footer#image-cropper
+
+              .row(style='margin-top:5%',ng-show='crop_div')
+                  .col-md-12(align='center')
+                    .cropit-preview
+                      //a(href='#',style = 'margin-top : 3%',ng-if='myFile').thumbnail
+                        img(src='', alt='Image').img-rounded#blah
+
+
+              .row(style='margin-top:8%;margin-bottom:8%',ng-show='crop_div')
+                  .col-md-10.col-md-offset-1
+                    input.cropit-image-zoom-input(type='range')
+
+              
+              
               .fileUpload.btn.btn-primary.pull-left(style='margin-top:0%')
-                span.glyphicon.glyphicon-picture
-                input.upload(type='file',file-model='myFile')#imgInp
+                      span.glyphicon.glyphicon-picture
+                      input.upload.cropit-image-input(type='file',file-model='myFile',ng-click='show_img()')#imgInp
+
                 
               button.btn.btn-default(type='button', data-dismiss='modal') Cancelar
               button.btn.btn-primary(type='button',ng-click='post()') Publicar
