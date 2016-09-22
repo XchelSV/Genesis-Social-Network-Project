@@ -124,9 +124,12 @@ var  Place = require('../Models/place_model');
 
 			var postId = request.params._id;
 
-			
+				Post.findById(postId, function (err,doc){
+						response.sendFile(path.join(__dirname, '../public/img/postPhotos/'+postId+doc.ext_img));
 
-					response.sendFile(path.join(__dirname, '../public/img/postPhotos/'+postId+'.jpg'));
+				})
+
+					
 
 
 		})
@@ -168,7 +171,7 @@ var  Place = require('../Models/place_model');
 										if (img === 'true' || img === true){
 											console.log('its deleted from API');
 											var fs = require('fs');
-											fs.unlinkSync('./public/img/postPhotos/'+id+'.jpg');
+											fs.unlinkSync('./public/img/postPhotos/'+id+post.ext_img);
 										}
 										response.sendStatus(200);
 
@@ -357,19 +360,24 @@ var  Place = require('../Models/place_model');
 							   console.log('Post Id: '+save._id);
 							   var fs = require('fs')
 
-							   var path = request.files.img.path;
-							   var newPath =  './public/img/postPhotos/'+save._id+'.jpg';
+							   var path_img = request.files.img.path;
+							   
 
-							   var is = fs.createReadStream(path);
+							   var is = fs.createReadStream(path_img);
+							   var ext = path.extname(is.path);
+
+							   var newPath =  './public/img/postPhotos/'+save._id+ ext;
 							   var os = fs.createWriteStream(newPath);
 
-							   is.pipe(imagemin({ ext: '.jpg' }))
+							   is.pipe(imagemin({ ext: ext }))
 							   	 .pipe(os);
 
 							   is.on('end', function() {
 								      //eliminamos el archivo temporal
-								   fs.unlinkSync(path);
+								   fs.unlinkSync(path_img);
 								})
+
+							   save.ext_img = ext;
 							}
 
 							console.log('Succesfully Added Post in User '+request.body.id+' by API app');

@@ -289,21 +289,57 @@ var  Place = require('../Models/place_model');
 				date:request.body.date,
 				img:request.body.img,
 				audio:request.body.audio,
-				video:request.body.video
+				video:request.body.video,
+				ext_img:'.png'
 
 			});	
+
+
+			function decodeBase64Image(dataString) {
+
+			  var matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
+			  image_array = {};
+
+			  if (matches.length !== 3) {
+			    return new Error('Invalid input string');
+			  }
+
+			  image_array.type = matches[1];
+			  image_array.data = new Buffer(matches[2], 'base64');
+
+			  return image_array;
+			}
+
+
 
 			NewPost.save(function (err,save){
 
 				if (err) throw err;
 
-					var flag =  request.body.img;
-					console.log('Flag is '+flag);
-
-					if(request.files.file != undefined){
+					if(request.body.file != undefined){
 					   
-					   console.log('Post Id: '+save._id);
-					   var fs = require('fs')
+						var imageBuffer = decodeBase64Image(request.body.file);
+						var type;
+
+						if (imageBuffer.type == 'image/jpeg') {
+							type = '.jpg'
+						}
+						else{
+							type = '.png'
+						}
+
+						var fs = require('fs');
+						fs.writeFile('./public/img/postPhotos/'+save._id+type, imageBuffer.data, function(err) { 
+
+							if (err){
+								Post.remove({_id:save._id});
+								response.sendStatus(500);
+								throw err;	
+							}
+
+						})
+
+					   /*var fs = require('fs')
 
 					   var path = request.files.file.path;
 					   var newPath =  './public/img/postPhotos/'+save._id+'.jpg';
@@ -317,7 +353,7 @@ var  Place = require('../Models/place_model');
 					   is.on('end', function() {
 						      //eliminamos el archivo temporal
 						   fs.unlinkSync(path);
-						})
+						})*/
 					}
 
 					console.log('Succesfully Added Post in User '+request.body.id);
@@ -372,7 +408,7 @@ var  Place = require('../Models/place_model');
 					if (img === 'true' || img === true){
 						console.log('its deleted');
 						var fs = require('fs');
-						fs.unlinkSync('./public/img/postPhotos/'+id+'.jpg');
+						fs.unlinkSync('./public/img/postPhotos/'+id+'.png');
 					}
 					response.sendStatus(200);
 

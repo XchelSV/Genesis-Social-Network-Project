@@ -12,7 +12,8 @@ var mongoose = require('mongoose'),
     	date:{type:Date},
     	img:{type:Boolean},
     	audio:{type:Boolean},
-    	video:{type:Boolean}
+    	video:{type:Boolean},
+        ext_img:{type:String}
     })
 
 module.exports = mongoose.model('Post', PostSchema);
