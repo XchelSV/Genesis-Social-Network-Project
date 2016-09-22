@@ -332,6 +332,15 @@ var  Place = require('../Models/place_model');
 							audio = true;
 						}
 
+						var ext_image = undefined;
+						if(request.files.img != undefined){
+							var fs = require('fs')
+							var path_img = request.files.img.path;
+							var is = fs.createReadStream(path_img);
+							ext_image = path.extname(is.path);
+						}
+
+
 						var NewPost = new Post({
 
 							user_id:userId,
@@ -342,7 +351,8 @@ var  Place = require('../Models/place_model');
 							date: moment().tz("America/Mexico_City").format(),
 							img:img,
 							audio:audio,
-							video:video
+							video:video,
+							ext_img: ext_image
 
 						});	
 
@@ -369,15 +379,14 @@ var  Place = require('../Models/place_model');
 							   var newPath =  './public/img/postPhotos/'+save._id+ ext;
 							   var os = fs.createWriteStream(newPath);
 
-							   is.pipe(imagemin({ ext: ext }))
-							   	 .pipe(os);
+							   //is.pipe(imagemin({ ext: ext }))
+							   	is.pipe(os);
 
 							   is.on('end', function() {
 								      //eliminamos el archivo temporal
 								   fs.unlinkSync(path_img);
 								})
 
-							   save.ext_img = ext;
 							}
 
 							console.log('Succesfully Added Post in User '+request.body.id+' by API app');
