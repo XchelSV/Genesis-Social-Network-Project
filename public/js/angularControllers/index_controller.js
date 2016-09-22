@@ -22,7 +22,7 @@ app.controller('indexController',function  ($scope, $http, $cookies, fileUpload,
 				$cookies.temporalSession = uuid.v4();
 			};
 		}
-		console.log($cookies.temporalSession);
+		
 
 		$scope.posts = [];
 		$scope.numberOfPosts;
@@ -80,7 +80,7 @@ app.controller('indexController',function  ($scope, $http, $cookies, fileUpload,
 					$scope.posts.push(data[l]);
 
 				};
-				console.log($scope.posts);
+				
 
 				for (var i = 0; i < data.length; i++) {
 				 	for (var j = 0; j < data[i].like.length; j++) {
@@ -126,7 +126,7 @@ app.controller('indexController',function  ($scope, $http, $cookies, fileUpload,
 
 		$scope.accessToPost = function (user_id){
 
-			console.log(user_id);
+			
 			if($cookies.session != undefined){
 				if($cookies.id == user_id){
 					return true;
@@ -311,10 +311,37 @@ app.controller('indexController',function  ($scope, $http, $cookies, fileUpload,
 
 		}
 
+		$('#image-cropper').cropit({
+		  imageBackground: true,
+		  imageBackgroundBorderWidth: 15 // Width of background border
+		});
+		$('.download-btn').click(function() {
+		  var imageData = $('#image-cropper').cropit('export');
+		  window.open(imageData);
+		});
+
+		$scope.crop_div = false;
+		$scope.show_img = function(){
+
+				$scope.myFile = undefined;
+				$scope.crop_div = true;
+				//console.log($('#image-cropper').cropit('export'));
+
+		}
+
+		$scope.reset_img = function (){
+
+			$scope.myFile = undefined;
+			$scope.crop_div = false;
+
+		}
+
 
 		$scope.post = function (){
 
-			if($scope.postText == undefined && $scope.myFile == undefined){
+
+			var validate_img = $('#image-cropper').cropit('export');
+			if($scope.postText == undefined && (validate_img == undefined || $scope.crop_div == false)){
 
 			}
 			else{
@@ -323,34 +350,60 @@ app.controller('indexController',function  ($scope, $http, $cookies, fileUpload,
 					$scope.postText = '';
 				}
 
-				if ($scope.myFile != undefined){
+				if (validate_img != undefined && $scope.crop_div == true){
 
-					var file = $scope.myFile;
-					var uploadUrl = '/posts';
-					var NewPost = fileUpload.uploadFileToUrl(file,$scope.id, $scope.name,$scope.postText, true,false,false ,uploadUrl,$scope.posts);
+					var date = new Date();
+					var file = $('#image-cropper').cropit('export');
+					//var uploadUrl = '/posts';
+					//var NewPost = fileUpload.uploadFileToUrl(file,$scope.id, $scope.name,$scope.postText, true,false,false ,uploadUrl,$scope.posts);
 
-						$scope.postText = '';
-						$scope.myFile = undefined;
+					var post = {file:file,id:$scope.id, name:$scope.name, body:$scope.postText, img:true, video:false, audio:false, date: date}
+					$http.post('/posts',post).success(function (data, status, headers, config){
+					
 						
 						var postModal = angular.element(document.querySelector('#postModal'));
 						postModal.modal('hide');
-					$scope.numberOfPosts++;
+
+						$scope.postText = '';
+						$scope.myFile = undefined;
+						$scope.crop_div = false;
+						$scope.posts.unshift(data);
+
+						$scope.numberOfPosts++;
+
+					})
+					.error(function (){
+						alert('AJAX error in post');
+					})
+
 
 					
 
 				}else{
 
-					var file = $scope.myFile;
-					var uploadUrl = '/posts';
-					var NewPost = fileUpload.uploadFileToUrl(file,$scope.id,$scope.name, $scope.postText, false,false,false ,uploadUrl,$scope.posts);
-						$scope.postText = '';
-						$scope.myFile = undefined;
+					var date = new Date();
+					var file = undefined;
+					//var uploadUrl = '/posts';
+					//var NewPost = fileUpload.uploadFileToUrl(file,$scope.id,$scope.name, $scope.postText, false,false,false ,uploadUrl,$scope.posts);
 
+					var post = {file:file,id:$scope.id, name:$scope.name, body:$scope.postText, img:false, video:false, audio:false, date: date}
+					$http.post('/posts',post).success(function (data, status, headers, config){
 												
 						var postModal = angular.element(document.querySelector('#postModal'));
 						postModal.modal('hide');
 
-					$scope.numberOfPosts++;
+						$scope.postText = '';
+						$scope.myFile = undefined;
+						$scope.crop_div = false;
+						$scope.posts.unshift(data);
+
+						$scope.numberOfPosts++;
+
+					})
+					.error(function (){
+						alert('AJAX error in post');
+					})
+
 				}
 			}
 
