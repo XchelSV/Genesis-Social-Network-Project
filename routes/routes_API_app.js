@@ -87,7 +87,7 @@ var  Place = require('../Models/place_model');
 					response.send(docs);
 				})
 			} else {
-				response.send(404);
+				response.sendStatus(404);
 			}
 			/*}
 			else{
@@ -105,6 +105,22 @@ var  Place = require('../Models/place_model');
 
 		.delete(function (request, response){
 			
+		})
+
+	app.route('/api/user/profile/:_userid')
+
+		.get(function (request,response){
+
+			var user_id = request.params._userid;
+			User.findById(user_id, function (err,user){
+				if (err) {
+					response.sendStatus(500);
+				}
+				else{
+					response.send(user);
+				}
+			})
+
 		})
 
 	app.route('/api/user/img/:_id')
