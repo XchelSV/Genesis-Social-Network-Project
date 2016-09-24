@@ -8,7 +8,7 @@ block content
             border: 1px solid #ccc;
             border-radius: 3px;
             margin-top: 7px;
-            width: 400px;
+            width: 320px;
             height: 280px;
           }
 
@@ -72,10 +72,9 @@ block content
                     .col-md-2
                       img(src='/img/instagram19.png',height='35',width='35')
 
-                
-                
+
           .row
-            .col-md-4(ng-repeat='post in posts track by $index')
+            .col-md-4(ng-repeat='post in posts track by $index', on-finish-render="ngRepeatFinished")
               .well(id='post{{post._id}}').animated.bounceInUp
                   
                   .row(style='font-size:110%')
@@ -89,7 +88,7 @@ block content
                     
                   .row(style='margin-top:8%',ng-if='post.img',align='center')
                     .col-md-14
-                      img(src='/img/postPhotos/{{post._id}}{{post.ext_img}}').img-responsive.img-rounded
+                      img(src='/img/postPhotos/{{post._id}}{{post.ext_img}}',width='100%').img-responsive.img-rounded
                   .row(style='margin-top:5%')
                     .col-md-2.col-md-offset-10.dropdown
                       button.close.dropdown-toggle(type='button',id="dLabel",data-toggle="dropdown", aria-haspopup="true", aria-expanded="false")
