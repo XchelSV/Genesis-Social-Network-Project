@@ -44,7 +44,7 @@ block content
               .col-md-4(ng-repeat='place in places')
                 .panel.panel-default
                   .panel-body
-                    .col-md-12.span12(id='map{{place._id}}',style=' display:block;height: 400px;')
+                    .span(id='map{{place._id}}',style=' display:block;height: 400px;')
                   .panel-footer
                     .row
                       .col-md-offset-10.col-md-2.dropdown
@@ -202,6 +202,9 @@ block content
                     }
                     });
                   }
+
+                  google.maps.event.addDomListener(window, "load", initMap);
+
 
       script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyApGDtXEF9UYqdCmutZaV7tS2vW6x1LgOQ&signed_in=true&libraries=places&callback=initMap', async='', defer='')
   script(src='/socket.io/socket.io.js')
